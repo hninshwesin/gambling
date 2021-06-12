@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdersTable extends Migration
+class CreateBIDComparesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('b_i_d_compares', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('order_id')->index();
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->bigInteger('amount');
-            $table->bigInteger('minute');
-            $table->float('stock_rate')->nullable();
-            $table->unsignedBigInteger('app_user_id')->index();
-            $table->foreign('app_user_id')->references('id')->on('app_users')->onDelete('cascade');
+            $table->float('start_rate');
+            $table->float('end_rate');
+            $table->bigInteger('status');
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('b_i_d_compares');
     }
 }
