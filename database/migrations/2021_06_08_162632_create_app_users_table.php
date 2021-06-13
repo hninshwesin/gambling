@@ -15,7 +15,7 @@ class CreateAppUsersTable extends Migration
     {
         Schema::create('app_users', function (Blueprint $table) {
             $table->id();
-            $table->integer('phone_number')->unique();
+            $table->bigInteger('phone_number')->unique();
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
