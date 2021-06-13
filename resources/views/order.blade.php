@@ -11,9 +11,6 @@
         <!-- /.card-header -->
         <div class="card-header">
             <h3 class="card-title">Order Details</h3>
-            @foreach ($app_users as $app_user)
-            <h1 hidden>{{$app_user->phone_number}}</h1>
-            @endforeach
         </div>
         <!-- /.card-body -->
         <div class="card-body">
@@ -29,9 +26,7 @@
                 <tbody>
                     @foreach($orders as $order)
                     <tr>
-                        @if ($app_user->id == $order->app_user_id)
-                        <td>{{$app_user->phone_number}}</td>
-                        @endif
+                        <td>{{$order->app_user->phone_number}}</td>
                         <td>{{$order->amount}}</td>
                         <td>{{$order->minute}}</td>
                         <td>{{$order->stock_rate}}</td>

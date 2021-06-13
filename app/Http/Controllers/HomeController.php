@@ -42,7 +42,8 @@ class HomeController extends Controller
     {
         if (Auth::check()) {
             $app_users = AppUser::all();
-            $orders = Order::all();
+            $orders = Order::get();
+
             return view('order', compact('app_users', 'orders'));
         } else {
             return redirect("/login");

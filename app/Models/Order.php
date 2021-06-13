@@ -11,8 +11,8 @@ class Order extends Model
 
     protected $guarded = [];
 
-    public function b_i_d_compares()
+    public function app_user()
     {
-        return $this->hasOne(BIDCompare::class);
+        return $this->belongsTo(AppUser::class);
     }
 }
