@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderHistoryResourceCollection;
 use App\Jobs\OrderOnClickTime;
 use App\Models\AppUser;
+use App\Models\BIDCompare;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,9 +35,18 @@ class OrderController extends Controller
         ]);
 
         // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
-        $BIDresponse = OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
+        OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
 
-        return response()->json($BIDresponse->getResponse());
-        // return response()->json(['error_code' => '0', 'BID' => $BIDresponse, 'message' => 'Success']);
+        return response()->json(['error_code' => '3', 'order' => $order, 'message' => 'Success']);
+    }
+
+    public function order_history()
+    {
+        $user = Auth::guard('user-api')->user();
+        $app_user = AppUser::find($user->id);
+
+        $order = Order::where('app_user_id', $app_user->id)->get();
+        // dd($order);
+        return (new OrderHistoryResourceCollection($order));
     }
 }

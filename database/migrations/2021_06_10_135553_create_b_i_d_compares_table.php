@@ -18,8 +18,8 @@ class CreateBIDComparesTable extends Migration
             $table->unsignedBigInteger('order_id')->index();
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->bigInteger('amount');
-            $table->float('start_rate');
-            $table->float('end_rate');
+            $table->double('start_rate');
+            $table->double('end_rate');
             $table->bigInteger('status');
             $table->timestamps();
         });

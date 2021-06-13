@@ -10,4 +10,9 @@ class BIDCompare extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function Order()
+    {
+        return $this->belongsToMany(Order::class);
+    }
 }

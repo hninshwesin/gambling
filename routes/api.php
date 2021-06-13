@@ -26,5 +26,6 @@ Route::group(['prefix' => 'v1'], function () {
         'middleware' => 'auth.user-api'
     ], function () {
         Route::post('order_create', [App\Http\Controllers\API\OrderController::class, 'create']);
+        Route::get('order_history', [App\Http\Controllers\API\OrderController::class, 'order_history']);
     });
 });

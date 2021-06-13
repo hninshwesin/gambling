@@ -15,7 +15,6 @@ class OrderOnClickTime implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $order;
-    public $response;
     /**
      * Create a new job instance.
      *
@@ -37,9 +36,6 @@ class OrderOnClickTime implements ShouldQueue
         $end_rate = 1002.44;
 
         if ($start_rate < $end_rate) {
-            // var_dump($start_rate);
-            // var_dump($end_rate);
-            // var_dump($this->order->amount);
             var_dump('win');
 
             $BID = BIDCompare::create([
@@ -49,11 +45,6 @@ class OrderOnClickTime implements ShouldQueue
                 'end_rate' => $end_rate,
                 'status' => 1,
             ]);
-
-            // $this->respond('Success');
-            // $this->response = $BID;
-
-            return response()->json(['error_code' => '0', 'order' => $this->order, 'BID' => $BID, 'message' => 'Success']);
         } elseif ($start_rate > $end_rate) {
             var_dump('loss');
 
@@ -64,9 +55,6 @@ class OrderOnClickTime implements ShouldQueue
                 'end_rate' => $end_rate,
                 'status' => 2,
             ]);
-
-            // $this->response = $BID;
-            return response()->json(['error_code' => '0', 'BID' => $BID, 'message' => 'Success']);
         } elseif ($start_rate == $end_rate) {
             var_dump('stable');
 
@@ -77,14 +65,6 @@ class OrderOnClickTime implements ShouldQueue
                 'end_rate' => $end_rate,
                 'status' => 0,
             ]);
-
-            // $this->response = $BID;
-            return response()->json(['error_code' => '0', 'BID' => $BID, 'message' => 'Success']);
         }
     }
-
-    // public function getResponse()
-    // {
-    //     return $this->response;
-    // }
 }
