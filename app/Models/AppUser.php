@@ -29,4 +29,19 @@ class AppUser extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Order::class);
     }
+
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
+    }
+
+    public function total_balances()
+    {
+        return $this->hasOne(TotalBalance::class);
+    }
+
+    public function withdraws()
+    {
+        return $this->hasMany(Withdraw::class);
+    }
 }

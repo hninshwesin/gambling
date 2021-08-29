@@ -10,4 +10,9 @@ class Deposit extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function app_user()
+    {
+        return $this->belongsTo(AppUser::class);
+    }
 }

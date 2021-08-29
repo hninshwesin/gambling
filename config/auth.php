@@ -54,6 +54,14 @@ return [
             'driver' => 'passport',
             'provider' => 'app_users',
         ],
+        'agent' => [
+            'driver' => 'session',
+            'provider' => 'agents'
+        ],
+        'client' => [
+            'driver' => 'session',
+            'provider' => 'clients'
+        ]
     ],
 
     /*
@@ -81,6 +89,14 @@ return [
         'app_users' => [
             'driver' => 'eloquent',
             'model' => App\Models\AppUser::class,
+        ],
+        'agents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Agent::class,
+        ],
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Client::class,
         ],
 
         // 'users' => [
@@ -113,6 +129,18 @@ return [
         ],
         'app_users' => [
             'provider' => 'app_users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'agents' => [
+            'provider' => 'agents',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'clients' => [
+            'provider' => 'clients',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

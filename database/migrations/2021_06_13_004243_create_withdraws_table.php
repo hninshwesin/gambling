@@ -15,6 +15,12 @@ class CreateWithdrawsTable extends Migration
     {
         Schema::create('withdraws', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('app_user_id')->index();
+            $table->foreign('app_user_id')->references('id')->on('app_users')->onDelete('cascade');
+            $table->bigInteger('amount');
+            $table->bigInteger('fee');
+            $table->bigInteger('final_amount');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

@@ -46,7 +46,7 @@ class OrderController extends Controller
         $app_user = AppUser::find($user->id);
 
         $order = Order::where('app_user_id', $app_user->id)->get();
-        // dd($order);
+
         return (new OrderHistoryResourceCollection($order));
     }
 }

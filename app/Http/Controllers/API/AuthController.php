@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppUser;
+use App\Models\TotalBalance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,9 +22,14 @@ class AuthController extends Controller
 
         $user = AppUser::create($validatedData);
 
+        TotalBalance::create([
+            'app_user_id' => $user->id,
+            'total_balance' => 0,
+        ]);
+
         $accessToken = $user->createToken('authToken')->accessToken;
 
-        return response()->json(['error_code' => '0', 'user' => $user, 'access_token' => $accessToken, 'message' => 'Register successfully']);
+        return response()->json(['error_code' => '0', 'app_user' => $user, 'access_token' => $accessToken, 'message' => 'Register successfully']);
     }
 
     public function login(Request $request)

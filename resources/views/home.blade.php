@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @extends('layouts.sidebar')
 
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="icon">
-                    <i class="ion ion-bag"></i>
+                    <i class="fa fa-bars"></i>
                 </div>
 
                 {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}

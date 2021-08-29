@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agent;
+use App\Models\Client;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,6 +42,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->middleware('guest:agent');
+        $this->middleware('guest:client');
     }
 
     /**
@@ -56,6 +61,16 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function showAgentRegisterForm()
+    {
+        return view('auth.register', ['url' => 'agent']);
+    }
+
+    public function showClientRegisterForm()
+    {
+        return view('auth.register', ['url' => 'client']);
+    }
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -69,5 +84,27 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    protected function createAgent(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        Agent::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        return redirect()->intended('login/agent');
+    }
+
+    protected function createClient(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        Client::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        return redirect()->intended('login/client');
     }
 }

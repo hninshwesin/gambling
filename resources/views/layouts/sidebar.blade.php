@@ -14,8 +14,10 @@
                 {{-- <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> --}}
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                <a href="{{ url('/agent_register') }}">
+                    <i class="fas fa-user-plus nav-icon"></i> Agent Register</a>
             </div>
+
         </div>
 
         <!-- Sidebar Menu -->
@@ -34,14 +36,32 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="/home" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="fas fa-home nav-icon"></i>
                                 <p>Home</p>
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="/app_user" class="nav-link active">
+                                <i class="fas fa-list-ul nav-icon"></i>
+                                <p>App User Detail Lists</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="/order" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="fas fa-list-ul nav-icon"></i>
                                 <p>Order Details</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/deposit" class="nav-link active">
+                                <i class="fas fa-list-ul nav-icon"></i>
+                                <p>Deposits</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/withdraw" class="nav-link active">
+                                <i class="fas fa-list-ul nav-icon"></i>
+                                <p>Withdraws</p>
                             </a>
                         </li>
                     </ul>
