@@ -25,7 +25,7 @@
 
     @endif
 
-    <form action="{{ url('/agent/withdraw/store')}}" method="POST">
+    <form action="{{ url('agent/withdraw') }}" method="POST">
         @csrf
         <div class="row justify-content-center">
 
@@ -33,13 +33,13 @@
 
                 <div class="form-group">
 
-                    <strong>App User Phone Number:</strong>
+                    <strong>Client Phone Number:</strong>
 
-                    <select class="form-control" name="app_user_id">
+                    <select class="form-control" name="client_id">
                         <option value="">--Select--</option>
-                        @foreach( $app_users as $app_user)
-                        <option value="{{ $app_user->id }}">{{$app_user->phone_number}} (Current Balance -
-                            {{$app_user->total_balances->total_balance}})</option>
+                        @foreach( $clients as $client)
+                        <option value="{{ $client->id }}">{{$client->phone_number}} (Current Balance -
+                            {{$client->total_balances->total_balance}})</option>
                         @endforeach
                     </select>
 
@@ -54,34 +54,6 @@
                     <strong>Withdraw Amount:</strong>
 
                     <input type="text" name="amount" class="form-control" placeholder="input amount" required>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-8">
-
-                <div class="form-group">
-
-                    <strong>Admin Fee:</strong>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="admin_fee" placeholder="Admin Fee (%)" required>
-                        <span class="input-group-addon"> %</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-8">
-
-                <div class="form-group">
-
-                    <strong>Agent Fee:</strong>
-                    <div class="input-group">
-                        <input type="number" class="form-control" name="agent_fee" placeholder="Agent Fee (%)" required>
-                        <span class="input-group-addon"> %</span>
-                    </div>
 
                 </div>
 

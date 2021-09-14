@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TotalBalaceResource;
 use App\Http\Resources\TotalBalaceResourceCollection;
 use App\Models\AppUser;
+use App\Models\Client;
 use App\Models\TotalBalance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,10 +20,10 @@ class TotalBalanceController extends Controller
      */
     public function index()
     {
-        $user = Auth::guard('user-api')->user();
-        $app_user = AppUser::find($user->id);
+        $user = Auth::guard('client-api')->user();
+        $app_user = Client::find($user->id);
 
-        $total_balance = TotalBalance::where('app_user_id', $app_user->id)->get();
+        $total_balance = TotalBalance::where('client_id', $app_user->id)->get();
 
         return new TotalBalaceResourceCollection($total_balance);
     }

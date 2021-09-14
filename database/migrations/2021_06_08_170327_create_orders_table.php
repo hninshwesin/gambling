@@ -18,8 +18,8 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('amount');
             $table->bigInteger('minute');
             $table->double('stock_rate')->nullable();
-            $table->unsignedBigInteger('app_user_id')->index();
-            $table->foreign('app_user_id')->references('id')->on('app_users')->onDelete('cascade');
+            $table->unsignedBigInteger('client_id')->index();
+            // $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->timestamps();
         });
     }

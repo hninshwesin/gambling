@@ -17,7 +17,7 @@ class TotalBalaceResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'app_user_id' => $this->app_user_id,
+            'app_user_id' => $this->client_id,
             'total_balance' => $this->total_balance,
             'status' => 0,
             'error_code' => 0

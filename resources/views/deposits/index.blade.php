@@ -42,7 +42,7 @@
                     @foreach($deposits as $deposit)
                     <tr>
                         <td>{{ $deposit->id }}</td>
-                        <td>{{$deposit->app_user->phone_number}}</td>
+                        <td>{{$deposit->client->phone_number}}</td>
                         <td>{{$deposit->amount}}</td>
                         <td>{{$deposit->fee}} %</td>
                         <td>{{$deposit->description}}</td>

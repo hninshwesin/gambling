@@ -2,44 +2,36 @@
 
 @extends('layouts.sidebar')
 
+@if ($errors->any())
+
+<div class="alert alert-danger col-md-8" style="margin-left: 300px;margin-top: 1px;">
+
+    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+
+    <ul>
+
+        @foreach ($errors->all() as $error)
+
+        <li>{{ $error }}</li>
+
+        @endforeach
+
+    </ul>
+
+</div>
+
+@endif
+
 @section('content')
 <div class="content-header">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @if ($admin->have_agent == 1)
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Agent already registered!</h3>
+
+                <div class="card" style="border-color: rgb(82, 189, 238)">
+                    <div class="card-header" style="background-color: rgb(82, 189, 238)">
+                        <h1 class="card-title">Agent Register</h1>
                     </div>
-
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Agent Name</th>
-                                    <th>Email</th>
-                                    <th>Registered Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($admin->agent_id == $agent->id)
-                                <tr>
-                                    <td>{{ $agent->id }}</td>
-                                    <td>{{$agent->name}}</td>
-                                    <td>{{$agent->email}}</td>
-                                    <td>{{$agent->created_at}}</td>
-                                </tr>
-                                @endif
-
-                        </table>
-                    </div>
-                </div>
-
-                @elseif ($admin->have_agent == 0)
-                <div class="card">
-                    <div class="card-header">Agent Register</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('agent_register.store')}}">
@@ -115,7 +107,39 @@
                         </form>
                     </div>
                 </div>
+
+                @if ($admin->have_agent == 1)
+                <div class="card" style="border-color: rgb(150, 245, 190)">
+                    <div class="card-header" style="background-color: rgb(150, 245, 190)">
+                        <h1 class="card-title">Agent Lists</h1>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Agent Name</th>
+                                    <th>Email</th>
+                                    <th>Registered Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($agents as $agent)
+                                <tr>
+                                    <td>{{ $agent->id }}</td>
+                                    <td>{{ $agent->name }}</td>
+                                    <td>{{ $agent->email }}</td>
+                                    <td>{{ $agent->created_at }}</td>
+                                </tr>
+                                @endforeach
+
+
+                        </table>
+                    </div>
+                </div>
                 @endif
+
             </div>
         </div>
     </div>

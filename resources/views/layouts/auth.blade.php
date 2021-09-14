@@ -87,13 +87,13 @@
                         <a class="nav-link" href="{{ url("login/agent") }}">{{ __('Agent Login') }}</a>
                     </li>
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="{{ url("login/client") }}">{{ __('Client Login') }}</a>
-                    </li>
+                    </li> --}}
 
                     @if (Route::has('register'))
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        <a class="nav-link" href="{{ route('register') }}">{{ __('Admin Register') }}</a>
                     </li>
                     @endif
                     @else

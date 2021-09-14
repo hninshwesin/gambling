@@ -46,22 +46,18 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
-        'user' => [
+        'client' => [
             'driver' => 'session',
-            'provider' => 'app_users',
+            'provider' => 'clients',
         ],
-        'user-api' => [
+        'client-api' => [
             'driver' => 'passport',
-            'provider' => 'app_users',
+            'provider' => 'clients',
         ],
         'agent' => [
             'driver' => 'session',
             'provider' => 'agents'
         ],
-        'client' => [
-            'driver' => 'session',
-            'provider' => 'clients'
-        ]
     ],
 
     /*
@@ -86,17 +82,13 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'app_users' => [
+        'clients' => [
             'driver' => 'eloquent',
-            'model' => App\Models\AppUser::class,
+            'model' => App\Models\Client::class,
         ],
         'agents' => [
             'driver' => 'eloquent',
             'model' => App\Models\Agent::class,
-        ],
-        'clients' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Client::class,
         ],
 
         // 'users' => [
@@ -127,20 +119,14 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-        'app_users' => [
-            'provider' => 'app_users',
+        'clients' => [
+            'provider' => 'clients',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
         'agents' => [
             'provider' => 'agents',
-            'table' => 'password_resets',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-        'clients' => [
-            'provider' => 'clients',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

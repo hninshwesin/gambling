@@ -43,7 +43,7 @@
                         <li class="nav-item">
                             <a href="/agent/app_user" class="nav-link active">
                                 <i class="fas fa-list-ul nav-icon"></i>
-                                <p>App User Detail Lists</p>
+                                <p>Client Detail Lists</p>
                             </a>
                         </li>
                         <li class="nav-item">

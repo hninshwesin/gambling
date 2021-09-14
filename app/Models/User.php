@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'total_balance',
+        'have_agent'
     ];
 
     /**

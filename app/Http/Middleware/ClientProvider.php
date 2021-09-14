@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AppUserProvider
+class ClientProvider
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class AppUserProvider
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::guard('user-api')->check()) {
+        if (!Auth::guard('client-api')->check()) {
             return response(['message' => 'Invalid Credentials']);
         }
         return $next($request);

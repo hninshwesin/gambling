@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\Client;
+use App\Models\GenerateCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ClientRegisterController extends Controller
 {
@@ -18,10 +20,10 @@ class ClientRegisterController extends Controller
      */
     public function index()
     {
-        $user = Auth::guard('agent')->user();
-        $agent = Agent::find($user->id);
-        $client = Client::find($agent->client_id);
-        return view('agents.client_register')->with(['agent' => $agent, 'client' => $client]);
+        // $user = Auth::guard('agent')->user();
+        // $agent = Agent::find($user->id);
+        // $generated_code = GenerateCode::get();
+        return view('agents.client_register.index');
     }
 
     /**
@@ -31,7 +33,7 @@ class ClientRegisterController extends Controller
      */
     public function create()
     {
-        //
+        return view('agents.client_register.create');
     }
 
     /**
@@ -42,24 +44,23 @@ class ClientRegisterController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::guard('agent')->user();
-        $agent = Agent::find($user->id);
+        $agent = Auth::guard('agent')->user();
 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'email|required|string|max:255|unique:clients',
-            'password' => 'required|string|min:8|confirmed'
-        ]);
+        if ($agent) {
+            $uuid = Str::uuid()->toString();
 
-        $validatedData['password'] = Hash::make($request->password);
+            $code = GenerateCode::create([
+                'code' => $uuid,
+                'status' => 0,
+                'agent_id' => $agent->id,
+                'client_id' => 0,
+                'generate_type' => 0
+            ]);
 
-        $client = Client::create($validatedData);
+            $generated_code = $code->code;
 
-        $agent->have_client = 1;
-        $agent->client_id = $client->id;
-        $agent->save();
-
-        return redirect()->intended('/agent/home');
+            return redirect()->back()->with('data', $generated_code);
+        }
     }
 
     /**

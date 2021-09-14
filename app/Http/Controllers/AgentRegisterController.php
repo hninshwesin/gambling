@@ -20,8 +20,8 @@ class AgentRegisterController extends Controller
     {
         $user = Auth::guard('web')->user();
         $admin = User::find($user->id);
-        $agent = Agent::find($admin->agent_id);
-        return view('agent_register')->with(['admin' => $admin, 'agent' => $agent]);
+        $agents = Agent::where('user_id', $admin->id)->get();
+        return view('agent_register')->with(['admin' => $admin, 'agents' => $agents]);
     }
 
     /**
@@ -51,15 +51,25 @@ class AgentRegisterController extends Controller
             'password' => 'required|string|min:8|confirmed'
         ]);
 
-        $validatedData['password'] = Hash::make($request->password);
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $password = Hash::make($request->input('password'));
 
-        $agent = Agent::create($validatedData);
+        $agent = Agent::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'total_balance' => 0,
+            'user_id' => $user->id
+        ]);
 
-        $admin->have_agent = 1;
-        $admin->agent_id = $agent->id;
-        $admin->save();
+        if ($admin->have_agent == 0) {
+            $admin->have_agent = 1;
+            $admin->save();
+        }
 
-        return redirect()->intended('/home');
+        // return redirect()->intended('/home');
+        return redirect()->route('agent_register.index')->with('success', 'Agent created successfully');
     }
 
     /**

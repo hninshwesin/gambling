@@ -18,8 +18,11 @@ class CreateAgentsTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->bigInteger('total_balance');
             $table->bigInteger('have_client')->default('0');
-            $table->bigInteger('client_id')->default('0');
+            // $table->bigInteger('client_id')->default('0');
+            $table->unsignedBigInteger('user_id')->index();
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

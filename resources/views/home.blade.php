@@ -42,6 +42,22 @@
     {{-- <div class="row justify-content-center"> --}}
     <div class="row">
         <div class="col-lg-4 col-12">
+            <div class="small-box bg-success">
+
+                <div class="inner">
+
+                    <h3>{{$total_balance}}<sup style="font-size: 20px"> MMK</sup></h3>
+
+                    <p>Your Balance</p>
+                </div>
+
+                <div class="icon">
+                    <i class="fa fa-wallet"></i>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-12">
             <div class="small-box bg-info">
 
                 <div class="inner">
@@ -64,9 +80,9 @@
             <div class="small-box bg-gradient-success">
 
                 <div class="inner">
-                    <h3>{{$app_user_count}}</h3>
+                    <h3>{{$client_count}}</h3>
 
-                    <p>App User Registrations</p>
+                    <p>Client Registrations</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-user-plus"></i>
@@ -96,7 +112,7 @@
     <div class="card">
         <!-- /.card-header -->
         <div class="card-header">
-            <h3 class="card-title">App User Infomation</h3>
+            <h3 class="card-title">All Client Infomation</h3>
         </div>
         <!-- /.card-body -->
         <div class="card-body">
@@ -109,11 +125,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($app_users as $app_user)
+                    @foreach($clients as $client)
                     <tr>
-                        <td>{{$app_user->phone_number}}</td>
-                        <td>{{$app_user->email}}</td>
-                        <td>{{$app_user->created_at}}</td>
+                        <td>{{$client->phone_number}}</td>
+                        <td>{{$client->email}}</td>
+                        <td>{{$client->created_at}}</td>
                     </tr>
                     @endforeach
             </table>

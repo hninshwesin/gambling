@@ -1,17 +1,40 @@
-@extends('agents.auth')
+@extends('clients.auth')
 
-@extends('agents.sidebar')
+@extends('clients.sidebar')
+
+@if ($errors->any())
+
+<div class="alert alert-danger col-md-8" style="margin-left: 300px;margin-top: 1px;">
+
+    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+
+    <ul>
+
+        @foreach ($errors->all() as $error)
+
+        <li>{{ $error }}</li>
+
+        @endforeach
+
+    </ul>
+
+</div>
+
+@endif
 
 @section('content')
 <div class="content-header">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Client Register</div>
+
+                <div class="card" style="border-color: rgb(82, 189, 238)">
+                    <div class="card-header" style="background-color: rgb(82, 189, 238)">
+                        <h1 class="card-title">Sub Client Register</h1>
+                    </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('client_register.store')}}">
+                        <form method="POST" action="{{ route('sub_client_register.store')}}">
                             @csrf
 
                             <div class="form-group row">
@@ -85,6 +108,38 @@
                     </div>
 
                 </div>
+
+                @if ($client->have_sub_client == 1)
+                <div class="card" style="border-color: rgb(150, 245, 190)">
+                    <div class="card-header" style="background-color: rgb(150, 245, 190)">
+                        <h1 class="card-title">Sub Client Lists</h1>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client Name</th>
+                                    <th>Email</th>
+                                    <th>Registered Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($clients as $client)
+                                <tr>
+                                    <td>{{ $client->id }}</td>
+                                    <td>{{ $client->name }}</td>
+                                    <td>{{ $client->email }}</td>
+                                    <td>{{ $client->created_at }}</td>
+                                </tr>
+                                @endforeach
+
+
+                        </table>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>

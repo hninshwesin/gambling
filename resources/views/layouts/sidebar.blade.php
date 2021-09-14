@@ -43,7 +43,7 @@
                         <li class="nav-item">
                             <a href="/app_user" class="nav-link active">
                                 <i class="fas fa-list-ul nav-icon"></i>
-                                <p>App User Detail Lists</p>
+                                <p>Client Detail Lists</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -62,6 +62,18 @@
                             <a href="/withdraw" class="nav-link active">
                                 <i class="fas fa-list-ul nav-icon"></i>
                                 <p>Withdraws</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/depositPercents" class="nav-link active">
+                                <i class="fas fa-list-ul nav-icon"></i>
+                                <p>Deposit Percentage</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/withdrawPercents" class="nav-link active">
+                                <i class="fas fa-list-ul nav-icon"></i>
+                                <p>Withdraw Percentage</p>
                             </a>
                         </li>
                     </ul>

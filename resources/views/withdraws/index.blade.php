@@ -32,7 +32,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Phone Number</th>
-                        <th>Deposit Amount</th>
+                        <th>Withdraw Amount</th>
                         <th>Fee (%)</th>
                         <th>Description</th>
                         <th>Date</th>
@@ -42,9 +42,9 @@
                     @foreach($withdraws as $withdraw)
                     <tr>
                         <td>{{ $withdraw->id }}</td>
-                        <td>{{$withdraw->app_user->phone_number}}</td>
+                        <td>{{$withdraw->client>phone_number}}</td>
                         <td>{{$withdraw->amount}}</td>
-                        <td>{{$withdraw->fee}}</td>
+                        <td>{{$withdraw->fee}} %</td>
                         <td>{{$withdraw->description}}</td>
                         <td>{{$withdraw->created_at}}</td>
                     </tr>

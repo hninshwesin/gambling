@@ -15,8 +15,8 @@ class CreateTotalBalancesTable extends Migration
     {
         Schema::create('total_balances', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('app_user_id')->index();
-            $table->foreign('app_user_id')->references('id')->on('app_users')->onDelete('cascade');
+            $table->unsignedBigInteger('client_id')->index();
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->bigInteger('total_balance');
             $table->timestamps();
         });

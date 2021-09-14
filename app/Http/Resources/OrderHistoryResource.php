@@ -16,7 +16,7 @@ class OrderHistoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'app_user_id' => $this->app_user_id,
+            'app_user_id' => $this->client_id,
             'amount' => $this->amount,
             'minute' => $this->minute,
             'stock_rate' => $this->stock_rate,

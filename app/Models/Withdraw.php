@@ -11,8 +11,8 @@ class Withdraw extends Model
 
     protected $guarded = [];
 
-    public function app_user()
+    public function client()
     {
-        return $this->belongsTo(AppUser::class);
+        return $this->belongsTo(Client::class);
     }
 }

@@ -13,10 +13,10 @@ class Agent extends Authenticatable
     protected $guard = 'agent';
 
     protected $fillable = [
-        'name', 'email', 'password', 'have_client'
+        'name', 'email', 'password', 'have_client', 'user_id', 'total_balance'
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token'
     ];
 }

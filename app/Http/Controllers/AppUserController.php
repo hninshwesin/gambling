@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppUser;
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class AppUserController extends Controller
@@ -14,8 +15,8 @@ class AppUserController extends Controller
      */
     public function index()
     {
-        $app_users = AppUser::all();
-        return view('app_users.index')->with(['app_users' => $app_users]);
+        $clients = Client::all();
+        return view('app_users.index')->with(['clients' => $clients]);
     }
 
     /**

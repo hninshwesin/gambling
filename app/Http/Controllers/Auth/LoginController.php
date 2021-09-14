@@ -61,22 +61,22 @@ class LoginController extends Controller
         return back()->withInput($request->only('email', 'remember'));
     }
 
-    public function showClientLoginForm()
-    {
-        return view('auth.login', ['url' => 'client']);
-    }
+    // public function showClientLoginForm()
+    // {
+    //     return view('auth.login', ['url' => 'client']);
+    // }
 
-    public function clientLogin(Request $request)
-    {
-        $this->validate($request, [
-            'email'   => 'required|email',
-            'password' => 'required|min:6'
-        ]);
+    // public function clientLogin(Request $request)
+    // {
+    //     $this->validate($request, [
+    //         'email'   => 'required|email',
+    //         'password' => 'required|min:6'
+    //     ]);
 
-        if (Auth::guard('client')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+    //     if (Auth::guard('client')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended('/client/home');
-        }
-        return back()->withInput($request->only('email', 'remember'));
-    }
+    //         return redirect()->intended('/client/home');
+    //     }
+    //     return back()->withInput($request->only('email', 'remember'));
+    // }
 }

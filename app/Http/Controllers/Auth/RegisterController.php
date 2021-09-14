@@ -9,6 +9,7 @@ use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -66,10 +67,10 @@ class RegisterController extends Controller
         return view('auth.register', ['url' => 'agent']);
     }
 
-    public function showClientRegisterForm()
-    {
-        return view('auth.register', ['url' => 'client']);
-    }
+    // public function showClientRegisterForm()
+    // {
+    //     return view('auth.register', ['url' => 'client']);
+    // }
 
     /**
      * Create a new user instance after a valid registration.
@@ -82,6 +83,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'total_balance' => 0,
             'password' => Hash::make($data['password']),
         ]);
     }
@@ -89,22 +91,27 @@ class RegisterController extends Controller
     protected function createAgent(Request $request)
     {
         $this->validator($request->all())->validate();
+
+        $user = Auth::guard('web')->user();
+
         Agent::create([
             'name' => $request->name,
             'email' => $request->email,
+            'total_balance' => 0,
+            'user_id' => $user->id,
             'password' => Hash::make($request->password),
         ]);
         return redirect()->intended('login/agent');
     }
 
-    protected function createClient(Request $request)
-    {
-        $this->validator($request->all())->validate();
-        Client::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        return redirect()->intended('login/client');
-    }
+    // protected function createClient(Request $request)
+    // {
+    //     $this->validator($request->all())->validate();
+    //     Client::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //     ]);
+    //     return redirect()->intended('login/client');
+    // }
 }

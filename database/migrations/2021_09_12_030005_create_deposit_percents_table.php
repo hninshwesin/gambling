@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAppUsersTable extends Migration
+class CreateDepositPercentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateAppUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('app_users', function (Blueprint $table) {
+        Schema::create('deposit_percents', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('phone_number')->unique();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
+            $table->bigInteger('admin_percent');
+            $table->bigInteger('agent_percent');
+            $table->bigInteger('client_percent');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateAppUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('app_users');
+        Schema::dropIfExists('deposit_percents');
     }
 }
