@@ -42,7 +42,7 @@
                     @foreach($withdraws as $withdraw)
                     <tr>
                         <td>{{ $withdraw->id }}</td>
-                        <td>{{$withdraw->client>phone_number}}</td>
+                        <td>{{$withdraw->client->phone_number}}</td>
                         <td>{{$withdraw->amount}}</td>
                         <td>{{$withdraw->fee}} %</td>
                         <td>{{$withdraw->description}}</td>

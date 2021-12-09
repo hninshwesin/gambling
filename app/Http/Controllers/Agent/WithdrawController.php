@@ -67,7 +67,7 @@ class WithdrawController extends Controller
 
             $client = Client::find($client_id);
 
-            $percent = WithdrawPercent::first();
+            $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
             $admin_fee = $percent->admin_percent;
             $agent_fee = $percent->agent_percent;
 

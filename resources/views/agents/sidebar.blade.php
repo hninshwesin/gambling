@@ -66,15 +66,15 @@
                         </li>
                     </ul>
                 </li>
-                {{-- <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    <a href="{{ url('/password/create') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Simple Link
-                            <span class="right badge badge-danger">New</span>
+                            Change Your Password
+                            {{-- <span class="right badge badge-danger">New</span> --}}
                         </p>
                     </a>
-                </li> --}}
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

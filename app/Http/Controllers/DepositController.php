@@ -70,7 +70,7 @@ class DepositController extends Controller
 
             if ($client->parent_client_id == 0) {
 
-                $percent = DepositPercent::first();
+                $percent = DepositPercent::orderBy('id', 'DESC')->first();
                 $admin_fee = $percent->admin_percent;
                 $agent_fee = $percent->agent_percent;
 
@@ -122,7 +122,7 @@ class DepositController extends Controller
 
                 return redirect()->route('deposit.index')->with('success', 'Deposit filled successfully.');
             } elseif ($client->parent_client_id != 0) {
-                $percent = DepositPercent::first();
+                $percent = DepositPercent::orderBy('id', 'DESC')->first();
                 $admin_fee = $percent->admin_percent;
                 $agent_fee = $percent->agent_percent;
                 $client_fee = $percent->client_percent;

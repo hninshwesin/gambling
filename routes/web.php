@@ -4,6 +4,7 @@ use App\Http\Controllers\Agent\AppUserController as AgentAppUserController;
 use App\Http\Controllers\Agent\ClientRegisterController as AgentClientRegisterController;
 use App\Http\Controllers\Agent\DepositController as AgentDepositController;
 use App\Http\Controllers\Agent\WithdrawController as AgentWithdrawController;
+use App\Http\Controllers\Agent\ResetPasswordController as AgentResetPasswordController;
 use App\Http\Controllers\Client\AppUserController as ClientAppUserController;
 use App\Http\Controllers\Client\SubClientController as ClientSubClientController;
 use App\Http\Controllers\Client\DepositController as ClientDepositController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\DepositController;
 use App\Http\Controllers\DepositPercentController;
 use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\WithdrawPercentController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +56,7 @@ Route::group(['middleware' => 'auth:agent'], function () {
     Route::resource('/agent/app_user', AgentAppUserController::class);
     Route::resource('/agent/deposit', AgentDepositController::class);
     Route::resource('/agent/withdraw', AgentWithdrawController::class);
+    Route::resource('password', AgentResetPasswordController::class);
 });
 
 // Route::group(['middleware' => 'auth:client'], function () {
@@ -76,3 +79,9 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('logout', [LoginController::class, 'logout']);
+
+Route::get('/scheduler', function () {
+    Artisan::call('schedule:run');
+
+    return true;
+});
