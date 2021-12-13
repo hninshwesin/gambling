@@ -23,7 +23,7 @@ class ServiceStartController extends Controller
         $date = new DateTime();
 
         $real = $date->format('Y-m-d H:i:s');
-        $sub_date =  $date->modify('-30 seconds');
+        $sub_date =  $date->modify('-10 seconds');
 
         $formatted_date = $sub_date->format('Y-m-d H:i:s');
         $client = Auth::guard('client-api')->user();

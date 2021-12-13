@@ -57,7 +57,7 @@ class AuthController extends Controller
 
                     $accessToken = $client->createToken('authToken')->accessToken;
 
-                    return response()->json(['error_code' => '0', 'client' => $client, 'access_token' => $accessToken, 'message' => 'Register successfully']);
+                    return response()->json(['error_code' => '0', 'app_user' => $client, 'access_token' => $accessToken, 'message' => 'Register successfully']);
                 } elseif ($code->generate_type == 1) {
                     $parent_client = Client::find($code->client_id);
                     $client = Client::create([
@@ -85,7 +85,7 @@ class AuthController extends Controller
 
                     $accessToken = $client->createToken('authToken')->accessToken;
 
-                    return response()->json(['error_code' => '0', 'client' => $client, 'access_token' => $accessToken, 'message' => 'Register successfully']);
+                    return response()->json(['error_code' => '0', 'app_user' => $client, 'access_token' => $accessToken, 'message' => 'Register successfully']);
                 }
             } else {
                 return response()->json(['error_code' => '1', 'message' => 'Code already used'], 422);
