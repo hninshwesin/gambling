@@ -19,6 +19,8 @@ class TotalBalaceResource extends JsonResource
             'id' => $this->id,
             'app_user_id' => $this->client_id,
             'total_balance' => $this->total_balance,
+            'phone_number' => $this->client->phone_number,
+            'email' => $this->client->email,
             'status' => 0,
             'error_code' => 0
         ];
