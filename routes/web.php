@@ -17,8 +17,10 @@ use App\Http\Controllers\DepositController;
 use App\Http\Controllers\DepositPercentController;
 use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\WithdrawPercentController;
+use App\Models\BIDCompare;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,7 +83,33 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('logout', [LoginController::class, 'logout']);
 
 Route::get('/scheduler', function () {
-    Artisan::call('schedule:run');
 
-    return true;
+    // Artisan::call('schedule:run');
+    // return true;
+
+    // $start_rate = 1798.02;
+    // $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
+    //     ->accept('application/json')
+    //     ->get("https://www.goldapi.io/api/XAU/USD");
+
+    // $end_rate = json_decode($response);
+
+    // if ($start_rate < $end_rate->price) {
+    //     var_dump('win');
+    //     $status = 1;
+    // } elseif ($start_rate > $end_rate->price) {
+    //     var_dump('loss');
+    //     $status = 2;
+    // } elseif ($start_rate == $end_rate->price) {
+    //     $status = 0;
+    // }
+
+    // dd($status);
+    // $BID = BIDCompare::create([
+    //     'order_id' => 2,
+    //     'amount' => 200,
+    //     'start_rate' => $start_rate,
+    //     'end_rate' => $end_rate,
+    //     'status' => $status,
+    // ]);
 });

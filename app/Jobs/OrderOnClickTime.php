@@ -9,6 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class OrderOnClickTime implements ShouldQueue
 {
@@ -33,38 +35,29 @@ class OrderOnClickTime implements ShouldQueue
     public function handle()
     {
         $start_rate = $this->order->stock_rate;
-        $end_rate = 1002.44;
+        $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
+            ->accept('application/json')
+            ->get("https://www.goldapi.io/api/XAU/USD");
+        $end_rate = json_decode($response);
 
-        if ($start_rate < $end_rate) {
+        // Log::info('Log' . json_encode($this->order));
+
+        if ($start_rate < $end_rate->price) {
             var_dump('win');
-
-            $BID = BIDCompare::create([
-                'order_id' => $this->order->id,
-                'amount' => $this->order->amount,
-                'start_rate' => $start_rate,
-                'end_rate' => $end_rate,
-                'status' => 1,
-            ]);
-        } elseif ($start_rate > $end_rate) {
+            $status = 1;
+        } elseif ($start_rate > $end_rate->price) {
             var_dump('loss');
-
-            $BID = BIDCompare::create([
-                'order_id' => $this->order->id,
-                'amount' => $this->order->amount,
-                'start_rate' => $start_rate,
-                'end_rate' => $end_rate,
-                'status' => 2,
-            ]);
-        } elseif ($start_rate == $end_rate) {
+            $status = 2;
+        } elseif ($start_rate == $end_rate->price) {
             var_dump('stable');
-
-            $BID = BIDCompare::create([
-                'order_id' => $this->order->id,
-                'amount' => $this->order->amount,
-                'start_rate' => $start_rate,
-                'end_rate' => $end_rate,
-                'status' => 0,
-            ]);
+            $status = 0;
         }
+        $BID = BIDCompare::create([
+            'order_id' => $this->order->id,
+            'amount' => $this->order->amount,
+            'start_rate' => $start_rate,
+            'end_rate' => $end_rate->price,
+            'status' => $status,
+        ]);
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Client;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -26,19 +27,23 @@ class OrderController extends Controller
 
         $amount = $request->input('amount');
         $minute = $request->input('minute');
-        $stock_rate = 1003.15;
+        $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
+            ->accept('application/json')
+            ->get("https://www.goldapi.io/api/XAU/USD");
+
+        $stock_rate = json_decode($response);
 
         $order = Order::create([
             'amount' => $amount,
             'minute' => $minute,
-            'stock_rate' => $stock_rate,
+            'stock_rate' => $stock_rate->price,
             'client_id' => $app_user->id,
         ]);
 
         // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
         OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
 
-        return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Success']);
+        // return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Success']);
     }
 
     public function order_history()
