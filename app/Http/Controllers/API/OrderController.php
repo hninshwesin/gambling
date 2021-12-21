@@ -43,7 +43,7 @@ class OrderController extends Controller
         // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
         OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
 
-        // return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Success']);
+        return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Success']);
     }
 
     public function order_history()

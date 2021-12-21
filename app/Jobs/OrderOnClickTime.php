@@ -43,13 +43,13 @@ class OrderOnClickTime implements ShouldQueue
         // Log::info('Log' . json_encode($this->order));
 
         if ($start_rate < $end_rate->price) {
-            var_dump('win');
+            // var_dump('win');
             $status = 1;
         } elseif ($start_rate > $end_rate->price) {
-            var_dump('loss');
+            // var_dump('loss');
             $status = 2;
         } elseif ($start_rate == $end_rate->price) {
-            var_dump('stable');
+            // var_dump('stable');
             $status = 0;
         }
         $BID = BIDCompare::create([
