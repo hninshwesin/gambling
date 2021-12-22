@@ -12,6 +12,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -20,30 +21,46 @@ class OrderController extends Controller
         $user = Auth::guard('client-api')->user();
         $app_user = Client::find($user->id);
 
-        $request->validate([
-            'amount' => 'required',
+        // $validatedData = $request->validate([
+        //     'amount' => 'required|integer',
+        //     'minute' => 'required',
+        // ]);
+
+        // if (!$validatedData) {
+        //     return response()->json(['error_code' => '1', 'message' => 'Field is required'],  422);
+        // }
+
+        $validator = Validator::make($request->all(), [
+
+            'amount' => 'required|integer',
+
             'minute' => 'required',
         ]);
 
         $amount = $request->input('amount');
         $minute = $request->input('minute');
-        $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
-            ->accept('application/json')
-            ->get("https://www.goldapi.io/api/XAU/USD");
 
-        $stock_rate = json_decode($response);
+        if ($validator->fails()) {
+            return response()->json(['error_code' => '1', 'message' => $validator->messages()],  422);
+        } else {
+            $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
+                ->accept('application/json')
+                ->get("https://www.goldapi.io/api/XAU/USD");
 
-        $order = Order::create([
-            'amount' => $amount,
-            'minute' => $minute,
-            'stock_rate' => $stock_rate->price,
-            'client_id' => $app_user->id,
-        ]);
+            $stock_rate = json_decode($response);
 
-        // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
-        OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
+            $order = Order::create([
+                'amount' => $amount,
+                'minute' => $minute,
+                'stock_rate' => $stock_rate->price,
+                'client_id' => $app_user->id,
+            ]);
 
-        return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Success']);
+            // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
+            OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
+
+            return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Success']);
+        }
     }
 
     public function order_history()
