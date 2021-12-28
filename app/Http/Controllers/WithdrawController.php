@@ -112,6 +112,7 @@ class WithdrawController extends Controller
 
             $total_balance = TotalBalance::where('client_id', $client_id)->first();
             $total_balance->total_balance -= $final_amount;
+            $total_balance->wallet_balance -= $amount;
             $total_balance->save();
 
             return redirect()->route('withdraw.index')->with('success', 'Withdraw filled successfully.');

@@ -31,5 +31,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('get_total_balance', [App\Http\Controllers\API\TotalBalanceController::class, 'index']);
         Route::get('service_start', [\App\Http\Controllers\API\ServiceStartController::class, 'index']);
         Route::get('test', [\App\Http\Controllers\API\ServiceStartController::class, 'test']);
+        Route::get('last_order_history', [App\Http\Controllers\API\OrderController::class, 'last_order_history']);
     });
 });

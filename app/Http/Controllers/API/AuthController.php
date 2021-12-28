@@ -43,6 +43,7 @@ class AuthController extends Controller
                     TotalBalance::create([
                         'client_id' => $client->id,
                         'total_balance' => 0,
+                        'wallet_balance' => 0,
                     ]);
 
                     $agent = Agent::find($code->agent_id);
@@ -71,6 +72,7 @@ class AuthController extends Controller
                     TotalBalance::create([
                         'client_id' => $client->id,
                         'total_balance' => 0,
+                        'wallet_balance' => 0,
                     ]);
 
                     $agent = Agent::find($parent_client->agent_id);

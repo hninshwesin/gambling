@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\BIDCompare;
 use App\Models\Order;
+use App\Models\TotalBalance;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -59,5 +60,21 @@ class OrderOnClickTime implements ShouldQueue
             'end_rate' => $end_rate->price,
             'status' => $status,
         ]);
+
+        if ($BID->status == 1) {
+            $client = TotalBalance::where('client_id', $this->order->client_id)->first();
+            if ($client) {
+                $client->total_balance += $this->order->amount;
+                $client->wallet_balance += $this->order->amount;
+                $client->save();
+            }
+        } elseif ($BID->status == 2) {
+            $client = TotalBalance::where('client_id', $this->order->client_id)->first();
+            if ($client) {
+                $client->total_balance -= $this->order->amount;
+                $client->wallet_balance -= $this->order->amount;
+                $client->save();
+            }
+        }
     }
 }

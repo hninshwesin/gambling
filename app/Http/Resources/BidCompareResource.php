@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\BIDCompare;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderHistoryResource extends JsonResource
+class BidCompareResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +16,13 @@ class OrderHistoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'app_user_id' => $this->client_id,
+            'order_id' => $this->order_id,
             'amount' => $this->amount,
-            'minute' => $this->minute,
-            'stock_rate' => $this->stock_rate,
-            'bid_compare' => new BidCompareResource(BIDCompare::where('order_id', $this->id)->first()),
+            'start_rate' => $this->start_rate,
+            'end_rate' => $this->end_rate,
+            'status' => $this->status,
             'created_at' => $this->created_at->toDateTimeString(),
+            'error_code' => 0
         ];
     }
 }
