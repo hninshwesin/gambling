@@ -36,44 +36,80 @@ class OrderOnClickTime implements ShouldQueue
     public function handle()
     {
         $start_rate = $this->order->stock_rate;
+        $bid_status = $this->order->bid_status;
         $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
             ->accept('application/json')
             ->get("https://www.goldapi.io/api/XAU/USD");
         $end_rate = json_decode($response);
-
         // Log::info('Log' . json_encode($this->order));
 
-        if ($start_rate < $end_rate->price) {
-            // var_dump('win');
-            $status = 1;
-        } elseif ($start_rate > $end_rate->price) {
-            // var_dump('loss');
-            $status = 2;
-        } elseif ($start_rate == $end_rate->price) {
-            // var_dump('stable');
-            $status = 0;
-        }
-        $BID = BIDCompare::create([
-            'order_id' => $this->order->id,
-            'amount' => $this->order->amount,
-            'start_rate' => $start_rate,
-            'end_rate' => $end_rate->price,
-            'status' => $status,
-        ]);
-
-        if ($BID->status == 1) {
-            $client = TotalBalance::where('client_id', $this->order->client_id)->first();
-            if ($client) {
-                $client->total_balance += $this->order->amount;
-                $client->wallet_balance += $this->order->amount;
-                $client->save();
+        if ($bid_status == 0) {
+            if ($start_rate < $end_rate->price) {
+                // var_dump('win');
+                $status = 1;
+            } elseif ($start_rate > $end_rate->price) {
+                // var_dump('loss');
+                $status = 2;
+            } elseif ($start_rate == $end_rate->price) {
+                // var_dump('stable');
+                $status = 0;
             }
-        } elseif ($BID->status == 2) {
-            $client = TotalBalance::where('client_id', $this->order->client_id)->first();
-            if ($client) {
-                $client->total_balance -= $this->order->amount;
-                $client->wallet_balance -= $this->order->amount;
-                $client->save();
+            $BID = BIDCompare::create([
+                'order_id' => $this->order->id,
+                'amount' => $this->order->amount,
+                'start_rate' => $start_rate,
+                'end_rate' => $end_rate->price,
+                'status' => $status,
+            ]);
+
+            if ($BID->status == 1) {
+                $client = TotalBalance::where('client_id', $this->order->client_id)->first();
+                if ($client) {
+                    $client->total_balance += $this->order->amount;
+                    $client->wallet_balance += $this->order->amount;
+                    $client->save();
+                }
+            } elseif ($BID->status == 2) {
+                $client = TotalBalance::where('client_id', $this->order->client_id)->first();
+                if ($client) {
+                    $client->total_balance -= $this->order->amount;
+                    $client->wallet_balance -= $this->order->amount;
+                    $client->save();
+                }
+            }
+        } elseif ($bid_status == 1) {
+            if ($start_rate < $end_rate->price) {
+                // var_dump('loss');
+                $status = 2;
+            } elseif ($start_rate > $end_rate->price) {
+                // var_dump('win');
+                $status = 1;
+            } elseif ($start_rate == $end_rate->price) {
+                // var_dump('stable');
+                $status = 0;
+            }
+            $BID = BIDCompare::create([
+                'order_id' => $this->order->id,
+                'amount' => $this->order->amount,
+                'start_rate' => $start_rate,
+                'end_rate' => $end_rate->price,
+                'status' => $status,
+            ]);
+
+            if ($BID->status == 1) {
+                $client = TotalBalance::where('client_id', $this->order->client_id)->first();
+                if ($client) {
+                    $client->total_balance += $this->order->amount;
+                    $client->wallet_balance += $this->order->amount;
+                    $client->save();
+                }
+            } elseif ($BID->status == 2) {
+                $client = TotalBalance::where('client_id', $this->order->client_id)->first();
+                if ($client) {
+                    $client->total_balance -= $this->order->amount;
+                    $client->wallet_balance -= $this->order->amount;
+                    $client->save();
+                }
             }
         }
     }

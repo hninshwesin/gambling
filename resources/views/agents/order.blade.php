@@ -26,7 +26,7 @@
                 <tbody>
                     @foreach($orders as $order)
                     <tr>
-                        <td>{{$order->app_user->phone_number}}</td>
+                        <td>{{$order->client->phone_number}}</td>
                         <td>{{$order->amount}}</td>
                         <td>{{$order->minute}}</td>
                         <td>{{$order->stock_rate}}</td>

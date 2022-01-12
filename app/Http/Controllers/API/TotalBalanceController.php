@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DepositResourceCollection;
 use App\Http\Resources\TotalBalaceResource;
 use App\Http\Resources\TotalBalaceResourceCollection;
+use App\Http\Resources\WithdrawResourceCollection;
 use App\Models\AppUser;
 use App\Models\Client;
+use App\Models\Deposit;
 use App\Models\TotalBalance;
+use App\Models\Withdraw;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,5 +96,29 @@ class TotalBalanceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deposit_history()
+    {
+        $user = Auth::guard('client-api')->user();
+        $app_user = Client::find($user->id);
+
+        if ($app_user) {
+            $deposits = Deposit::where('client_id', $app_user->id)->get();
+
+            return new DepositResourceCollection($deposits);
+        }
+    }
+
+    public function withdraw_history()
+    {
+        $user = Auth::guard('client-api')->user();
+        $app_user = Client::find($user->id);
+
+        if ($app_user) {
+            $withdraws = Withdraw::where('client_id', $app_user->id)->get();
+
+            return new WithdrawResourceCollection($withdraws);
+        }
     }
 }

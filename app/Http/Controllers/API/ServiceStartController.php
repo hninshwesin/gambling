@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Events\GoldPriceSend;
 use App\Http\Controllers\Controller;
 use App\Models\GoldAPI;
-use App\Models\RawGoldAPI;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,24 +22,25 @@ class ServiceStartController extends Controller
         $date = new DateTime();
 
         $real = $date->format('Y-m-d H:i:s');
-        $sub_date =  $date->modify('-10 seconds');
+        $sub_date = $date->modify('-20 seconds');
 
         $formatted_date = $sub_date->format('Y-m-d H:i:s');
         $client = Auth::guard('client-api')->user();
         if ($client) {
-            $goldapi = GoldAPI::where('created_at',  '>', $formatted_date)->get();
-            $goldapi_data = [];
+            $goldapi_data = GoldAPI::where('created_at',  '>', $formatted_date)->get();
+            $goldapi = [];
             // $chart_format = [];
-            foreach ($goldapi as $data) {
+            foreach ($goldapi_data as $data) {
                 $result = [
                     'x' => (int) ($data->timestamp . '000'),
                     'y' => [$data->open_price, $data->high_price, $data->low_price, $data->close_price]
                 ];
-                array_push($goldapi_data, $result);
+                array_push($goldapi, $result);
             }
             // array_push($chart_format, $goldapi_data);
+            // broadcast(new GoldPriceSend($goldapi));
 
-            return response()->json(['data' => $goldapi_data]);
+            return response()->json(['data' => $goldapi]);
         } else {
             return response()->json(['error_code' => '1', 'message' => 'You don\'t have access']);
         }
@@ -112,10 +112,10 @@ class ServiceStartController extends Controller
         //
     }
 
-    public function test()
-    {
-        $goldapi = '[{"x":1638958571000,"y":[1784.32,1791.66,1783.7,1789.36]}]';
+    // public function test()
+    // {
+    //     $goldapi = '[{"x":1638958571000,"y":[1784.32,1791.66,1783.7,1789.36]}]';
 
-        broadcast(new GoldPriceSend($goldapi));
-    }
+    //     broadcast(new GoldPriceSend($goldapi));
+    // }
 }

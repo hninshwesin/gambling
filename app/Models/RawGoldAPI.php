@@ -9,5 +9,5 @@ class RawGoldAPI extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['body'];
+    protected $guarded = [];
 }

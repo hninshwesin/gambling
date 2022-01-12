@@ -26,11 +26,14 @@ Route::group(['prefix' => 'v1'], function () {
         'middleware' => 'auth.client-api'
     ], function () {
         Route::post('generate_code', [\App\Http\Controllers\API\SubClientRegistrationCodeController::class, 'store']);
-        Route::post('order_create', [App\Http\Controllers\API\OrderController::class, 'create']);
+        Route::post('buy_order_create', [App\Http\Controllers\API\OrderController::class, 'buy']);
         Route::get('order_history', [App\Http\Controllers\API\OrderController::class, 'order_history']);
         Route::get('get_total_balance', [App\Http\Controllers\API\TotalBalanceController::class, 'index']);
         Route::get('service_start', [\App\Http\Controllers\API\ServiceStartController::class, 'index']);
-        Route::get('test', [\App\Http\Controllers\API\ServiceStartController::class, 'test']);
+        // Route::get('test', [\App\Http\Controllers\API\ServiceStartController::class, 'test']);
         Route::get('last_order_history', [App\Http\Controllers\API\OrderController::class, 'last_order_history']);
+        Route::post('sell_order_create', [App\Http\Controllers\API\OrderController::class, 'sell']);
+        Route::get('deposit_history', [App\Http\Controllers\API\TotalBalanceController::class, 'deposit_history']);
+        Route::get('withdraw_history', [App\Http\Controllers\API\TotalBalanceController::class, 'withdraw_history']);
     });
 });

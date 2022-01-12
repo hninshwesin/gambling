@@ -21,7 +21,7 @@ class BidCompareResource extends JsonResource
             'start_rate' => $this->start_rate,
             'end_rate' => $this->end_rate,
             'status' => $this->status,
-            'created_at' => $this->created_at->toDateTimeString(),
+            'created_at' => $this->created_at->format('Y-m-d H:i'),
             'error_code' => 0
         ];
     }
