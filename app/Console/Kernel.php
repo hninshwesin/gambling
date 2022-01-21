@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Events\GoldPriceSend;
+use App\Models\BidPrice;
 use App\Models\GoldAPI;
 use App\Models\RawGoldAPI;
 use Carbon\Carbon;
@@ -46,33 +47,40 @@ class Kernel extends ConsoleKernel
                     'price' => $price,
                 ]);
 
-                $api = json_decode($response);
-                // $current_timestamp = $api->timestamp;
-                // var_dump('hello' . $current_timestamp);
-                // $previous_timestamp1 = Carbon::createFromTimestamp($current_timestamp)->subSecond()->timestamp;
-                // $previous_timestamp2 = Carbon::createFromTimestamp($current_timestamp)->subSecond(2)->timestamp;
-
-                // $raw_data_timestamp = RawGoldAPI::where('timestamp', '<', $current_timestamp)->last();
-                // dd($raw_data_timestamp);
-
-                // if ($raw_data_timestamp) {
-
-                $last_record = GoldAPI::latest()->first();
-                $goldapi_data = GoldAPI::create([
-                    'open_price' => $last_record->close_price,
-                    'high_price' => $api->high_price,
-                    'low_price' => $api->low_price,
-                    'close_price' => $api->price,
-                    'timestamp' => $api->timestamp
+                $bid_price = BidPrice::create([
+                    'bid_price' => $raw_data->price,
+                    'timestamp' => $raw_data->timestamp
                 ]);
-                $goldapi = [
-                    'x' => (int) ($goldapi_data->timestamp . '000'),
-                    'y' => [$goldapi_data->open_price, $goldapi_data->high_price, $goldapi_data->low_price, $goldapi_data->close_price]
-                ];
+
+                // dd($bid_price->timestamp);
+
+                $timestamp = Carbon::createFromTimestamp($bid_price->timestamp)->subMinute(1)->timestamp;
+                // dd($timestamp);
+                $sub_timestamp = BidPrice::where('timestamp', '<', $timestamp)->last();
+                $current_timestamp = BidPrice::where('timestamp', '=', $timestamp)->first();
+                dd($sub_timestamp);
+
+                if ($sub_timestamp) {
+
+                    $data = BidPrice::whereBetween('timestamp', [$sub_timestamp->timestamp, $current_timestamp->timestamp])->get();
+                    dd($data);
+
+                    // $last_record = GoldAPI::latest()->first();
+                    $goldapi_data = GoldAPI::create([
+                        'open_price' => $sub_timestamp->price,
+                        'high_price' => $api->high_price,
+                        'low_price' => $api->low_price,
+                        'close_price' => $bid_price->bid_price,
+                        'timestamp' => $bid_price->timestamp
+                    ]);
+                    $goldapi = [
+                        'x' => (int) ($goldapi_data->timestamp . '000'),
+                        'y' => [$goldapi_data->open_price, $goldapi_data->high_price, $goldapi_data->low_price, $goldapi_data->close_price]
+                    ];
 
 
-                broadcast(new GoldPriceSend($goldapi));
-                // }
+                    broadcast(new GoldPriceSend($goldapi));
+                }
             }
         });
     }
