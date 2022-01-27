@@ -2,8 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Events\GoldPriceSendEverySecond;
+use App\Models\BidPrice;
 use App\Models\GoldAPI;
 use App\Models\RawGoldAPI;
+use App\Models\SecondGoldAPI;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -55,34 +59,45 @@ class GoldApiCommand extends Command
                 'price' => $price,
             ]);
 
-            $api = json_decode($response);
-            // $current_timestamp = $api->timestamp;
-            // var_dump('hello' . $current_timestamp);
-            // $previous_timestamp1 = Carbon::createFromTimestamp($current_timestamp)->subSecond()->timestamp;
-            // $previous_timestamp2 = Carbon::createFromTimestamp($current_timestamp)->subSecond(2)->timestamp;
-
-            // $raw_data_timestamp = RawGoldAPI::where('timestamp', '<', $current_timestamp)->last();
-            // dd($raw_data_timestamp);
-
-            // if ($raw_data_timestamp) {
-
-            $goldapi_data = GoldAPI::create([
-                'open_price' => $api->prev_close_price,
-                'high_price' => $api->high_price,
-                'low_price' => $api->low_price,
-                'close_price' => $api->price,
-                'timestamp' => $api->timestamp
+            $bid_price = BidPrice::create([
+                'bid_price' => $raw_data->price,
+                'timestamp' => $raw_data->timestamp
             ]);
-            $goldapi = [
-                'x' => (int) ($goldapi_data->timestamp . '000'),
+
+            $current = Carbon::now();
+            $now = Carbon::now();
+            $start_minute = $now->startOfMinute()->toDateTimeString();
+            $end_minute = $now->endOfMinute()->toDateTimeString();
+
+            $data = BidPrice::whereBetween('created_at', [$start_minute, $end_minute])->get();
+
+            $open = $data->first();
+            $close = $data->last();
+            $low_price = $data->min('bid_price');
+            $high_price = $data->max('bid_price');
+            $timestamp = $current->timestamp;
+
+            // var_dump('open price is ' . $open->bid_price);
+            // var_dump('close price is' . $close->bid_price);
+            // var_dump('low_price is ' . $low_price);
+            // var_dump('high price is ' . $high_price);
+            // var_dump('timestamp is ' . $timestamp);
+
+            $goldapi_data = SecondGoldAPI::create([
+                'open_price' => $open->bid_price,
+                'high_price' => $high_price,
+                'low_price' => $low_price,
+                'close_price' => $close->bid_price,
+                'timestamp' => $timestamp,
+                'start_time' => $start_minute,
+                'end_time' => $end_minute
+            ]);
+            $everysecond_goldapi = [
+                'x' => (int) (Carbon::parse($goldapi_data->start_time)->timestamp . '000'),
                 'y' => [$goldapi_data->open_price, $goldapi_data->high_price, $goldapi_data->low_price, $goldapi_data->close_price]
             ];
 
-
-            // var_dump($goldapi);
-
-            //                broadcast(new GoldPriceSend($goldapi));
-            // }
+            broadcast(new GoldPriceSendEverySecond($everysecond_goldapi));
         }
         return 0;
     }

@@ -18,6 +18,7 @@ use App\Http\Controllers\DepositPercentController;
 use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\WithdrawPercentController;
 use App\Models\BIDCompare;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -83,6 +84,9 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('logout', [LoginController::class, 'logout']);
 
 Route::get('/scheduler', function () {
+
+    // $timestamp = Carbon::now()->subMinute(1);
+    // dd($timestamp->toDateTimeString());
 
     // Artisan::call('schedule:run');
     // return true;

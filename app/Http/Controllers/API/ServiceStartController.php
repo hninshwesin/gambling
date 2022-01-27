@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Events\GoldPriceSend;
 use App\Http\Controllers\Controller;
 use App\Models\GoldAPI;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,25 +23,46 @@ class ServiceStartController extends Controller
         $date = new DateTime();
 
         $real = $date->format('Y-m-d H:i:s');
-        $sub_date = $date->modify('-20 seconds');
+        $current_date = Carbon::now();
 
-        $formatted_date = $sub_date->format('Y-m-d H:i:s');
+        // $formatted_date = $current_date->format('Y-m-d H:i:s');
         $client = Auth::guard('client-api')->user();
         if ($client) {
-            $goldapi_data = GoldAPI::where('created_at',  '>', $formatted_date)->get();
+            $goldapi_data = GoldAPI::where('created_at',  '<', $current_date)->orderBy('id', 'desc')->limit(3)->get()->reverse();
+            $high_price = $goldapi_data->max('high_price');
+            $low_price = $goldapi_data->min('low_price');
+            // dd($goldapi_data);
             $goldapi = [];
             // $chart_format = [];
+            $numItems = count($goldapi_data);
+            $i = 0;
             foreach ($goldapi_data as $data) {
                 $result = [
                     'x' => (int) ($data->timestamp . '000'),
                     'y' => [$data->open_price, $data->high_price, $data->low_price, $data->close_price]
                 ];
                 array_push($goldapi, $result);
+                if (++$i === $numItems) {
+                    array_push($goldapi, [
+                        'x' => (int) ($current_date->startOfMinute()->timestamp . '000'),
+                        'y' => [$data->open_price, $data->high_price, $data->low_price, $data->close_price]
+                    ]);
+                }
             }
+
+            // array_push($goldapi, [
+            //     'x' => (int) ($current_date->startOfMinute()->timestamp . '000'),
+            //     'y' => [$data->open_price, $data->high_price, $data->low_price, $data->close_price]
+            // ]);
+
+            // array_push($goldapi, [
+            //     'x' => (int) ($current_date->startOfMinute()->timestamp . '000'),
+            //     'y' => [0, 0, 0, 0]
+            // ]);
             // array_push($chart_format, $goldapi_data);
             // broadcast(new GoldPriceSend($goldapi));
 
-            return response()->json(['data' => $goldapi]);
+            return response()->json(['data' => $goldapi, 'high_price' => $high_price, 'low_price' => $low_price]);
         } else {
             return response()->json(['error_code' => '1', 'message' => 'You don\'t have access']);
         }

@@ -8,9 +8,11 @@ use App\Http\Resources\OrderHistoryResourceCollection;
 use App\Jobs\OrderOnClickTime;
 use App\Models\AppUser;
 use App\Models\BIDCompare;
+use App\Models\BidPrice;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\TotalBalance;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -45,24 +47,32 @@ class OrderController extends Controller
         $balance = $wallet->total_balance;
 
         if ($balance > $amount) {
-            $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
-                ->accept('application/json')
-                ->get("https://www.goldapi.io/api/XAU/USD");
+            // $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
+            //     ->accept('application/json')
+            //     ->get("https://www.goldapi.io/api/XAU/USD");
 
-            $stock_rate = json_decode($response);
+            // $stock_rate = json_decode($response);
 
-            $order = Order::create([
-                'amount' => $amount,
-                'minute' => $minute,
-                'stock_rate' => $stock_rate->price,
-                'client_id' => $client->id,
-                'bid_status' => 0,
-            ]);
+            $current_time = Carbon::now()->toDateTimeString();
 
-            // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
-            OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
+            $bid_price = BidPrice::where('created_at', '<=', $current_time)->orderBy('id', 'desc')->first();
 
-            return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Your Order placed successfully']);
+            if ($bid_price) {
+                $order = Order::create([
+                    'amount' => $amount,
+                    'minute' => $minute,
+                    'stock_rate' => $bid_price->bid_price,
+                    'client_id' => $client->id,
+                    'bid_status' => 0, //buy
+                ]);
+
+                // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
+                OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
+
+                return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Your Order placed successfully']);
+            } else {
+                return response()->json(['error_code' => '1', 'message' => 'Please Try Again'], 422);
+            }
         } elseif ($balance < $amount) {
             return response()->json(['error_code' => '1', 'message' => 'Your balance is not sufficient'], 422);
         }
@@ -85,24 +95,26 @@ class OrderController extends Controller
         $balance = $wallet->total_balance;
 
         if ($balance > $amount) {
-            $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
-                ->accept('application/json')
-                ->get("https://www.goldapi.io/api/XAU/USD");
+            $current_time = Carbon::now()->toDateTimeString();
 
-            $stock_rate = json_decode($response);
+            $bid_price = BidPrice::where('created_at', '<=', $current_time)->orderBy('id', 'desc')->first();
 
-            $order = Order::create([
-                'amount' => $amount,
-                'minute' => $minute,
-                'stock_rate' => $stock_rate->price,
-                'client_id' => $client->id,
-                'bid_status' => 1,
-            ]);
+            if ($bid_price) {
+                $order = Order::create([
+                    'amount' => $amount,
+                    'minute' => $minute,
+                    'stock_rate' => $bid_price->bid_price,
+                    'client_id' => $client->id,
+                    'bid_status' => 1, //sell
+                ]);
 
-            // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
-            OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
+                // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
+                OrderOnClickTime::dispatch($order)->delay(now()->addMinutes($minute));
 
-            return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Your Order placed successfully']);
+                return response()->json(['error_code' => '0', 'order' => $order, 'message' => 'Your Order placed successfully']);
+            } else {
+                return response()->json(['error_code' => '1', 'message' => 'Please Try Again'], 422);
+            }
         } elseif ($balance < $amount) {
             return response()->json(['error_code' => '1', 'message' => 'Your balance is not sufficient'], 422);
         }
@@ -118,15 +130,18 @@ class OrderController extends Controller
         return (new OrderHistoryResourceCollection($order));
     }
 
-    public function last_order_history()
+    public function today_order_history()
     {
         $user = Auth::guard('client-api')->user();
         $app_user = Client::find($user->id);
 
-        $order = Order::where('client_id', $app_user->id)->orderBy('id', 'desc')->first();
+        $orders = Order::where('client_id', $app_user->id)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->get();
 
-        $orders = collect([$order]);
+        return (new OrderHistoryResourceCollection($orders));
+        // $order = Order::where('client_id', $app_user->id)->orderBy('id', 'desc')->first();
 
-        return OrderHistoryResource::collection($orders);
+        // $orders = collect([$order]);
+
+        // return OrderHistoryResource::collection($orders);
     }
 }
