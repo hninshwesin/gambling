@@ -28,7 +28,7 @@ class ServiceStartController extends Controller
         // $formatted_date = $current_date->format('Y-m-d H:i:s');
         $client = Auth::guard('client-api')->user();
         if ($client) {
-            $goldapi_data = GoldAPI::where('created_at',  '<', $current_date)->orderBy('id', 'desc')->limit(3)->get()->reverse();
+            $goldapi_data = GoldAPI::where('created_at',  '<', $current_date)->orderBy('id', 'desc')->limit(6)->get()->reverse();
             $high_price = $goldapi_data->max('high_price');
             $low_price = $goldapi_data->min('low_price');
             // dd($goldapi_data);
