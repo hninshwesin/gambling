@@ -22,6 +22,7 @@ class DepositResource extends JsonResource
             'fee' => $this->fee,
             'final_amount' => $this->final_amount,
             'description' => $this->description,
+            'approve_status' => $this->approve_status,
             'created_at' => $this->created_at->toDateTimeString(),
         ];
     }

@@ -15,4 +15,9 @@ class Order extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function bid_compare()
+    {
+        return $this->hasOne(BIDCompare::class);
+    }
 }

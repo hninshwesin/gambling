@@ -6,20 +6,35 @@
 
 <div class="container">
 
-    <div class="col-md-3 margin-tb" style="padding: 20px">
+    <div class="row" style="padding: 20px">
 
-        <div class="pull-left">
+        <div class="col-lg-12 margin-tb">
 
-            <h2>Withdraws</h2>
+            <div class="pull-left">
 
-        </div>
+                <h2>Withdraws</h2>
 
-        <div class="pull-right">
-
-            <a class="btn btn-success" href="{{ route('withdraw.create') }}">Fill Withdraw amount</a>
+            </div>
 
         </div>
 
+        <div class="form-group col-md-6">
+
+            <a class="btn btn-success" href="{{ route('withdraw.create') }}">Fill Withdraw</a>
+
+        </div>
+
+        <div class="form-group col-md-8">
+
+            <a class="btn btn-success" href="{{ route('withdraw_request') }}">Make Approve for Withdraw Request</a>
+
+        </div>
+
+        <div class="form-group col-md-6">
+
+            <a class="btn btn-primary" href="{{ route('home') }}"> Back to Home</a>
+
+        </div>
     </div>
 
     <div class="card">
@@ -35,7 +50,8 @@
                         <th>Withdraw Amount</th>
                         <th>Fee (%)</th>
                         <th>Description</th>
-                        <th>Date</th>
+                        <th>Request Date</th>
+                        <th>Approved Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,6 +63,7 @@
                         <td>{{$withdraw->fee}} %</td>
                         <td>{{$withdraw->description}}</td>
                         <td>{{$withdraw->created_at}}</td>
+                        <td>{{$withdraw->updated_at}}</td>
                     </tr>
                     @endforeach
             </table>

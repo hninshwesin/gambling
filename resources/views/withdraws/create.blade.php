@@ -25,6 +25,12 @@
 
     @endif
 
+    <div class="form-group col-md-6">
+
+        <a class="btn btn-primary" href="{{ route('withdraw.index') }}"> Back</a>
+
+    </div>
+
     <form action="{{ route('withdraw.store') }}" method="POST">
         @csrf
         <div class="row justify-content-center">

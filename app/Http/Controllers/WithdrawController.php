@@ -24,7 +24,7 @@ class WithdrawController extends Controller
      */
     public function index()
     {
-        $withdraws = Withdraw::all();
+        $withdraws = Withdraw::where('approve_status', '1')->get();
         return view('withdraws.index')->with(['withdraws' => $withdraws]);
     }
 
@@ -162,5 +162,85 @@ class WithdrawController extends Controller
     public function destroy(Withdraw $withdraw)
     {
         //
+    }
+
+    public function withdraw_request()
+    {
+        $withdraws = Withdraw::where('approve_status', '0')->get();
+        return view('withdraws.approve')->with(['withdraws' => $withdraws]);
+    }
+
+    public function withdraw_approve(Request $request)
+    {
+        $withdraw_id = $request->input('withdraw_id');
+        $withdraw = Withdraw::find($withdraw_id);
+
+        $admin = Auth::guard('web')->user();
+        $main = User::find($admin->id);
+
+        if ($main) {
+            if ($withdraw) {
+
+                $client = Client::find($withdraw->client_id);
+
+                if ($client) {
+                    // dd('hello');
+                    $withdraw->approve_status = 1;
+                    $withdraw->save();
+
+                    $amount = $withdraw->amount;
+
+                    $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
+                    $admin_fee = $percent->admin_percent;
+                    $agent_fee = $percent->agent_percent;
+
+                    $fee = $admin_fee + $agent_fee;
+                    $admin_amount = ($amount * $admin_fee) / 100;
+                    $agent_amount = ($amount * $agent_fee) / 100;
+                    $remove_amount = ($amount * $fee) / 100;
+                    $final_amount = $amount - $remove_amount;
+
+                    WithdrawAgentPercentage::create([
+                        'withdraw_id' => $withdraw->id,
+                        'total_percent' => $fee,
+                        'admin_id' => $main->id,
+                        'admin' => $admin_fee,
+                        'agent_id' => $client->agent_id,
+                        'agent' => $agent_fee,
+                    ]);
+
+                    WithdrawCommisionAdmin::create([
+                        'admin_id' => $main->id,
+                        'withdraw_id' => $withdraw->id
+                    ]);
+
+                    WithdrawCommisionAgent::create([
+                        'agent_id' => $client->agent_id,
+                        'withdraw_id' => $withdraw->id
+                    ]);
+
+                    $main->total_balance += $admin_amount;
+                    $main->save();
+
+                    $agent = Agent::find($client->agent_id);
+                    $agent->total_balance += $agent_amount;
+                    $agent->save();
+
+                    $total_balance = TotalBalance::where('client_id', $client->id)->first();
+                    $total_balance->total_balance -= $final_amount;
+                    $total_balance->wallet_balance -= $amount;
+                    $total_balance->save();
+
+
+                    return redirect()->back()->with('success', 'Withdraw Request has been approved');
+                } else {
+                    return redirect()->back()->with('failed', 'Client does not exist');
+                }
+            } else {
+                return redirect()->back()->with('failed', 'Withdraw does not exist');
+            }
+        } else {
+            return redirect()->back()->with('failed', 'Something went wrong.Please Sign in again!');
+        }
     }
 }

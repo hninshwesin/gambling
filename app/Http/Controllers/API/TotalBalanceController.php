@@ -97,28 +97,4 @@ class TotalBalanceController extends Controller
     {
         //
     }
-
-    public function deposit_history()
-    {
-        $user = Auth::guard('client-api')->user();
-        $app_user = Client::find($user->id);
-
-        if ($app_user) {
-            $deposits = Deposit::where('client_id', $app_user->id)->get();
-
-            return new DepositResourceCollection($deposits);
-        }
-    }
-
-    public function withdraw_history()
-    {
-        $user = Auth::guard('client-api')->user();
-        $app_user = Client::find($user->id);
-
-        if ($app_user) {
-            $withdraws = Withdraw::where('client_id', $app_user->id)->get();
-
-            return new WithdrawResourceCollection($withdraws);
-        }
-    }
 }

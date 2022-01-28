@@ -33,7 +33,9 @@ Route::group(['prefix' => 'v1'], function () {
         // Route::get('test', [\App\Http\Controllers\API\ServiceStartController::class, 'test']);
         Route::get('today_order_history', [App\Http\Controllers\API\OrderController::class, 'today_order_history']);
         Route::post('sell_order_create', [App\Http\Controllers\API\OrderController::class, 'sell']);
-        Route::get('deposit_history', [App\Http\Controllers\API\TotalBalanceController::class, 'deposit_history']);
-        Route::get('withdraw_history', [App\Http\Controllers\API\TotalBalanceController::class, 'withdraw_history']);
+        Route::get('deposit_history', [App\Http\Controllers\API\DepositController::class, 'deposit_history']);
+        Route::get('withdraw_history', [App\Http\Controllers\API\WithdrawController::class, 'withdraw_history']);
+        Route::post('deposit_request', [App\Http\Controllers\API\DepositController::class, 'deposit_request']);
+        Route::post('withdraw_request', [App\Http\Controllers\API\WithdrawController::class, 'withdraw_request']);
     });
 });

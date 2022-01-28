@@ -79,6 +79,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('app_user', AppUserController::class);
     Route::resource('depositPercents', DepositPercentController::class);
     Route::resource('withdrawPercents', WithdrawPercentController::class);
+    Route::get('deposit_request', [App\Http\Controllers\DepositController::class, 'deposit_request'])->name('deposit_request');
+    Route::post('deposit_approve', [App\Http\Controllers\DepositController::class, 'deposit_approve'])->name('deposit_approve');
+    Route::get('withdraw_request', [App\Http\Controllers\WithdrawController::class, 'withdraw_request'])->name('withdraw_request');
+    Route::post('withdraw_approve', [App\Http\Controllers\WithdrawController::class, 'withdraw_approve'])->name('withdraw_approve');
 });
 
 Route::get('logout', [LoginController::class, 'logout']);

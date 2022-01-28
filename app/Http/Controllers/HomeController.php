@@ -42,7 +42,7 @@ class HomeController extends Controller
     public function order_details()
     {
         if (Auth::check()) {
-            $orders = Order::get();
+            $orders = Order::OrderBy('id', 'desc')->get();
 
             return view('order', compact('orders'));
         } else {
