@@ -39,7 +39,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false
+]);
 
 Route::get('/login/agent', [LoginController::class, 'showAgentLoginForm']);
 // Route::get('/login/client', [LoginController::class, 'showClientLoginForm']);
