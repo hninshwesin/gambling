@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\CurrentPrice;
 use App\Events\GoldPriceSendEverySecond;
 use App\Models\BidPrice;
 use App\Models\GoldAPI;
@@ -64,6 +65,8 @@ class GoldApiCommand extends Command
                 'timestamp' => $raw_data->timestamp
             ]);
 
+            $current_price = $bid_price->bid_price;
+
             $goldapi_last_record = GoldAPI::orderBy('id', 'desc')->first();
             $start_minute = Carbon::parse($goldapi_last_record->start_time)->addMinutes(5)->toDateTimeString();
             $end_minute = Carbon::parse($goldapi_last_record->end_time)->addMinutes(5)->endOfMinute()->toDateTimeString();
@@ -95,6 +98,8 @@ class GoldApiCommand extends Command
                 'x' => (int) (Carbon::parse($goldapi_data->start_time)->timestamp . '000'),
                 'y' => [$goldapi_data->open_price, $goldapi_data->high_price, $goldapi_data->low_price, $goldapi_data->close_price]
             ];
+
+            broadcast(new CurrentPrice($current_price));
 
             broadcast(new GoldPriceSendEverySecond($everysecond_goldapi));
         }

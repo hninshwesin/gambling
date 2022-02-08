@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\CurrentPrice;
 use App\Http\Controllers\Agent\AppUserController as AgentAppUserController;
 use App\Http\Controllers\Agent\ClientRegisterController as AgentClientRegisterController;
 use App\Http\Controllers\Agent\DepositController as AgentDepositController;
@@ -90,6 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('logout', [LoginController::class, 'logout']);
 
 Route::get('/scheduler', function () {
+    // broadcast(new CurrentPrice('200'));
 
     // $timestamp = Carbon::now()->subMinute(1);
     // dd($timestamp->toDateTimeString());
