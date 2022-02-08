@@ -64,10 +64,9 @@ class GoldApiCommand extends Command
                 'timestamp' => $raw_data->timestamp
             ]);
 
-            $current = Carbon::now();
-            $now = Carbon::now();
-            $start_minute = $now->startOfMinute()->toDateTimeString();
-            $end_minute = $now->endOfMinute()->toDateTimeString();
+            $goldapi_last_record = GoldAPI::orderBy('id', 'desc')->first();
+            $start_minute = Carbon::parse($goldapi_last_record->start_time)->addMinutes(5)->toDateTimeString();
+            $end_minute = Carbon::parse($goldapi_last_record->end_time)->addMinutes(5)->endOfMinute()->toDateTimeString();
 
             $data = BidPrice::whereBetween('created_at', [$start_minute, $end_minute])->get();
 
@@ -75,7 +74,7 @@ class GoldApiCommand extends Command
             $close = $data->last();
             $low_price = $data->min('bid_price');
             $high_price = $data->max('bid_price');
-            $timestamp = $current->timestamp;
+            $timestamp = Carbon::parse($goldapi_last_record->start_time)->addMinutes(5)->timestamp;
 
             // var_dump('open price is ' . $open->bid_price);
             // var_dump('close price is' . $close->bid_price);

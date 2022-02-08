@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         // $schedule->command('gold:api');
         $schedule->call(function () {
-            $start = Carbon::now()->subMinute()->startOfMinute();
+            $start = Carbon::now()->subMinutes('5')->startOfMinute();
             $end = Carbon::now()->subMinute()->endOfMinute();
 
             $first = BidPrice::where('created_at', '>=', $start)->first();
@@ -69,7 +69,7 @@ class Kernel extends ConsoleKernel
                 ];
                 array_push($goldapi, $result);
                 array_push($goldapi, [
-                    'x' => (int) ($start->addMinute()->timestamp . '000'),
+                    'x' => (int) ($start->addMinutes(5)->timestamp . '000'),
                     'y' => [$goldapi_data->open_price, $goldapi_data->high_price, $goldapi_data->low_price, $goldapi_data->close_price]
                 ]);
                 // array_push($goldapi, [
@@ -132,7 +132,8 @@ class Kernel extends ConsoleKernel
             //         broadcast(new GoldPriceSend($goldapi));
             //     }
             // }
-        })->everyMinute();
+        })->everyFiveMinutes();;
+
         $schedule->command('gold:api');
     }
 
