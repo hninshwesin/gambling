@@ -63,6 +63,8 @@ Route::group(['middleware' => 'auth:agent'], function () {
     Route::resource('/agent/deposit', AgentDepositController::class);
     Route::resource('/agent/withdraw', AgentWithdrawController::class);
     Route::resource('password', AgentResetPasswordController::class);
+    Route::get('/agent/direct_withdraw', [\App\Http\Controllers\Agent\WithdrawController::class, 'direct_withdraw']);
+    Route::post('/agent/make_direct_withdraw', [\App\Http\Controllers\Agent\WithdrawController::class, 'make_direct_withdraw']);
 });
 
 // Route::group(['middleware' => 'auth:client'], function () {

@@ -5,6 +5,7 @@
 @section('content')
 
 <div class="container">
+
     @if ($errors->any())
 
     <div class="alert alert-danger">
@@ -31,7 +32,7 @@
 
             <div class="pull-left">
 
-                <h2> Request Withdraw Client's Money </h2>
+                <h2> Direct Withdraw Client's Money </h2>
 
             </div>
 
@@ -52,7 +53,7 @@
     </div>
 
     <div>
-        <form action="{{ url('agent/withdraw') }}" method="POST">
+        <form action="{{ url('agent/make_direct_withdraw') }}" method="POST">
             @csrf
             <div class="row justify-content-center">
 
