@@ -19,4 +19,9 @@ class Agent extends Authenticatable
     protected $hidden = [
         'password', 'remember_token'
     ];
+
+    public function agent_withdraws()
+    {
+        return $this->hasMany(AgentWithdraw::class);
+    }
 }

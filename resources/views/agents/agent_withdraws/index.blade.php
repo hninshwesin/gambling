@@ -27,20 +27,15 @@
 
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12">
 
-            <a class="btn btn-success" href="{{ url('/agent/withdraw/create') }}">Make Request to ADMIN for Client's
-                money Withdraw</a>
-
-        </div>
-
-        <div class="form-group col-md-8">
-
-            <a class="btn btn-success" href="{{ url('/agent/direct_withdraw') }}">Withdraw Client's Money</a>
+            <a class="btn btn-success" href="{{ url('/agent/agent_withdraw/create') }}">Make Request to ADMIN for
+                Withdraw
+                money</a>
 
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12">
 
             <a class="btn btn-primary" href="{{ route('home') }}"> Back to Home</a>
 
@@ -57,22 +52,28 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Phone Number</th>
+                        <th>Name</th>
                         <th>Withdraw Amount</th>
-                        <th>Fee (%)</th>
                         <th>Description</th>
                         <th>Date</th>
+                        <th>Approve Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($withdraws as $withdraw)
+                    @foreach($agent_withdraws as $agent_withdraw)
                     <tr>
-                        <td>{{ $withdraw->id }}</td>
-                        <td>{{$withdraw->client->phone_number}}</td>
-                        <td>{{$withdraw->amount}}</td>
-                        <td>{{$withdraw->fee}} %</td>
-                        <td>{{$withdraw->description}}</td>
-                        <td>{{$withdraw->created_at}}</td>
+                        <td>{{ $agent_withdraw->id }}</td>
+                        <td>{{$agent_withdraw->agent->name}}</td>
+                        <td>{{$agent_withdraw->amount}}</td>
+                        <td>{{$agent_withdraw->description}}</td>
+                        <td>{{$agent_withdraw->created_at}}</td>
+                        <td>
+                            @if ($agent_withdraw->approve_status == 0)
+                            Pending
+                            @elseif ($agent_withdraw->approve_status == 1)
+                            Approved
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
             </table>

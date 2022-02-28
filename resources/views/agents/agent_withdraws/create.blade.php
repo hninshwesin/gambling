@@ -4,27 +4,35 @@
 
 @section('content')
 
+@if ($errors->any())
+
+<div class="alert alert-danger col-md-8" style="margin-left: 250px;margin-top: 1px;">
+
+    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+
+    <ul>
+
+        @foreach ($errors->all() as $error)
+
+        <li>{{ $error }}</li>
+
+        @endforeach
+
+    </ul>
+
+</div>
+
+@elseif ($message = Session::get('error'))
+
+<div class="alert alert-danger col-md-8" style="margin-left: 250px;margin-top: 1px;">
+
+    <p>{{ $message }}</p>
+
+</div>
+
+@endif
+
 <div class="container">
-
-    @if ($errors->any())
-
-    <div class="alert alert-danger">
-
-        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-
-        <ul>
-
-            @foreach ($errors->all() as $error)
-
-            <li>{{ $error }}</li>
-
-            @endforeach
-
-        </ul>
-
-    </div>
-
-    @endif
 
     <div class="row" style="padding: 20px">
 
@@ -32,7 +40,7 @@
 
             <div class="pull-left">
 
-                <h2> Direct Withdraw Client's Money </h2>
+                <h2> Request Withdraw Your Money </h2>
 
             </div>
 
@@ -40,7 +48,7 @@
 
         <div class="form-group col-md-12">
 
-            <a class="btn btn-primary" href="{{ url('/agent/withdraw') }}">Back to Withdraw Main Page</a>
+            <a class="btn btn-primary" href="{{ url('/agent/agent_withdraw') }}">Back to Wallet Withdraw Page</a>
 
         </div>
 
@@ -53,7 +61,7 @@
     </div>
 
     <div>
-        <form action="{{ url('agent/make_direct_withdraw') }}" method="POST">
+        <form action="{{ url('agent/agent_withdraw') }}" method="POST">
             @csrf
             <div class="row justify-content-center">
 
@@ -61,15 +69,17 @@
 
                     <div class="form-group">
 
-                        <strong>Client Phone Number:</strong>
+                        Agent Name: <strong> {{$agent->name}} </strong>
 
-                        <select class="form-control" name="client_id">
-                            <option value="">--Select--</option>
-                            @foreach( $clients as $client)
-                            <option value="{{ $client->id }}">{{$client->phone_number}} (Current Balance -
-                                {{$client->total_balances->total_balance}})</option>
-                            @endforeach
-                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-md-8">
+
+                    <div class="form-group">
+
+                        Your Current Balance: <strong> {{$agent->total_balance}} </strong>
 
                     </div>
 

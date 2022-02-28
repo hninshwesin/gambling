@@ -20,6 +20,22 @@
 
 </div>
 
+@elseif ($message = Session::get('success'))
+
+<div class="alert alert-success col-md-8" style="margin-left: 250px;margin-top: 1px;">
+
+    <p>{{ $message }}</p>
+
+</div>
+
+@elseif ($message = Session::get('error'))
+
+<div class="alert alert-danger col-md-8" style="margin-left: 250px;margin-top: 1px;">
+
+    <p>{{ $message }}</p>
+
+</div>
+
 @endif
 
 @section('content')

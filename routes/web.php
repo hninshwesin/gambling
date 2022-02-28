@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\CurrentPrice;
+use App\Http\Controllers\Agent\AgentWithdrawController as AgentAgentWithdrawController;
 use App\Http\Controllers\Agent\AppUserController as AgentAppUserController;
 use App\Http\Controllers\Agent\ClientRegisterController as AgentClientRegisterController;
 use App\Http\Controllers\Agent\DepositController as AgentDepositController;
@@ -65,6 +66,7 @@ Route::group(['middleware' => 'auth:agent'], function () {
     Route::resource('password', AgentResetPasswordController::class);
     Route::get('/agent/direct_withdraw', [\App\Http\Controllers\Agent\WithdrawController::class, 'direct_withdraw']);
     Route::post('/agent/make_direct_withdraw', [\App\Http\Controllers\Agent\WithdrawController::class, 'make_direct_withdraw']);
+    Route::resource('agent/agent_withdraw', AgentAgentWithdrawController::class);
 });
 
 // Route::group(['middleware' => 'auth:client'], function () {

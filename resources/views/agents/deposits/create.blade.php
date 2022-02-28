@@ -25,6 +25,32 @@
 
     @endif
 
+    <div class="row" style="padding: 20px">
+
+        <div class="col-lg-12 margin-tb">
+
+            <div class="pull-left">
+
+                <h2> Request Deposit Client's Money </h2>
+
+            </div>
+
+        </div>
+
+        <div class="form-group col-md-12">
+
+            <a class="btn btn-primary" href="{{ url('/agent/deposit') }}">Back to Deposit Page</a>
+
+        </div>
+
+        <div class="form-group col-md-12">
+
+            <a class="btn btn-primary" href="{{ route('home') }}"> Back to Home</a>
+
+        </div>
+
+    </div>
+
     <form action="{{ url('agent/deposit') }}" method="POST">
         @csrf
         <div class="row justify-content-center">

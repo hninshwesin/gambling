@@ -39,7 +39,7 @@
 
         <div class="form-group col-md-12">
 
-            <a class="btn btn-success" href="{{ url('/agent/withdraw') }}">Back to Withdraw Main Page</a>
+            <a class="btn btn-primary" href="{{ url('/agent/withdraw') }}">Back to Withdraw Main Page</a>
 
         </div>
 
