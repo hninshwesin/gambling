@@ -7,6 +7,7 @@ use App\Http\Controllers\Agent\ClientRegisterController as AgentClientRegisterCo
 use App\Http\Controllers\Agent\DepositController as AgentDepositController;
 use App\Http\Controllers\Agent\WithdrawController as AgentWithdrawController;
 use App\Http\Controllers\Agent\ResetPasswordController as AgentResetPasswordController;
+use App\Http\Controllers\AgentDetailController;
 use App\Http\Controllers\Client\AppUserController as ClientAppUserController;
 use App\Http\Controllers\Client\SubClientController as ClientSubClientController;
 use App\Http\Controllers\Client\DepositController as ClientDepositController;
@@ -90,6 +91,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('deposit_approve', [App\Http\Controllers\DepositController::class, 'deposit_approve'])->name('deposit_approve');
     Route::get('withdraw_request', [App\Http\Controllers\WithdrawController::class, 'withdraw_request'])->name('withdraw_request');
     Route::post('withdraw_approve', [App\Http\Controllers\WithdrawController::class, 'withdraw_approve'])->name('withdraw_approve');
+    Route::resource('agent_detail', AgentDetailController::class);
+    Route::get('agent_withdraw_request', [\App\Http\Controllers\AgentDetailController::class, 'agent_withdraw_request'])->name('agent_withdraw_request');
+    Route::post('agent_withdraw_approve', [\App\Http\Controllers\AgentDetailController::class, 'agent_withdraw_approve'])->name('agent_withdraw_approve');
+    Route::get('agent_withdraw_history', [\App\Http\Controllers\AgentDetailController::class, 'agent_withdraw_history'])->name('agent_withdraw_history');
 });
 
 Route::get('logout', [LoginController::class, 'logout']);

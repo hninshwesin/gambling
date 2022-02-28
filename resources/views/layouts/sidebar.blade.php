@@ -47,6 +47,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="/agent_detail" class="nav-link active">
+                                <i class="fas fa-list-ul nav-icon"></i>
+                                <p>Agent Detail Lists</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="/order" class="nav-link active">
                                 <i class="fas fa-list-ul nav-icon"></i>
                                 <p>Order Details</p>
