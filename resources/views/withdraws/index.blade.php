@@ -49,6 +49,7 @@
                         <th>Phone Number</th>
                         <th>Withdraw Amount</th>
                         <th>Fee (%)</th>
+                        <th>Final Amount</th>
                         <th>Description</th>
                         <th>Request Date</th>
                         <th>Approved Date</th>
@@ -61,6 +62,7 @@
                         <td>{{$withdraw->client->phone_number}}</td>
                         <td>{{$withdraw->amount}}</td>
                         <td>{{$withdraw->fee}} %</td>
+                        <td>{{$withdraw->final_amount}}</td>
                         <td>{{$withdraw->description}}</td>
                         <td>{{$withdraw->created_at}}</td>
                         <td>{{$withdraw->updated_at}}</td>
