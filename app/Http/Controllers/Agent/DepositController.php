@@ -66,136 +66,140 @@ class DepositController extends Controller
             $amount = $request->input('amount');
             $description = $request->input('description');
 
-            $client = Client::find($client_id);
+            if ($agent->total_balance > $amount) {
+                $client = Client::find($client_id);
 
-            if ($client->parent_client_id == 0) {
+                if ($client->parent_client_id == 0) {
 
-                $percent = DepositPercent::orderBy('id', 'DESC')->first();
-                $admin_fee = $percent->admin_percent;
-                $agent_fee = $percent->agent_percent;
+                    $percent = DepositPercent::orderBy('id', 'DESC')->first();
+                    $admin_fee = $percent->admin_percent;
+                    $agent_fee = $percent->agent_percent;
 
-                $fee = $admin_fee + $agent_fee;
-                $admin_amount = ($amount * $admin_fee) / 100;
-                $agent_amount = ($amount * $agent_fee) / 100;
-                $remove_amount = ($amount * $fee) / 100;
-                $final_amount = $amount - $remove_amount;
+                    $fee = $admin_fee + $agent_fee;
+                    $admin_amount = ($amount * $admin_fee) / 100;
+                    $agent_amount = ($amount * $agent_fee) / 100;
+                    $remove_amount = ($amount * $fee) / 100;
+                    $final_amount = $amount - $remove_amount;
 
-                $deposit = Deposit::create([
-                    'client_id' => $client_id,
-                    'amount' => $amount,
-                    'fee' => $fee,
-                    'final_amount' => $final_amount,
-                    'description' => $description
-                ]);
+                    $deposit = Deposit::create([
+                        'client_id' => $client_id,
+                        'amount' => $amount,
+                        'fee' => $fee,
+                        'final_amount' => $final_amount,
+                        'description' => $description
+                    ]);
 
-                DepositAgentPercentage::create([
-                    'deposit_id' => $deposit->id,
-                    'total_percent' => $fee,
-                    'admin_id' => $agent->user_id,
-                    'admin' => $admin_fee,
-                    'agent_id' => $agent->id,
-                    'agent' => $agent_fee
-                ]);
+                    DepositAgentPercentage::create([
+                        'deposit_id' => $deposit->id,
+                        'total_percent' => $fee,
+                        'admin_id' => $agent->user_id,
+                        'admin' => $admin_fee,
+                        'agent_id' => $agent->id,
+                        'agent' => $agent_fee
+                    ]);
 
-                DepositCommisionAdmin::create([
-                    'admin_id' => $agent->user_id,
-                    'deposit_id' => $deposit->id,
-                    'generate_type' => 0
-                ]);
+                    DepositCommisionAdmin::create([
+                        'admin_id' => $agent->user_id,
+                        'deposit_id' => $deposit->id,
+                        'generate_type' => 0
+                    ]);
 
-                DepositCommisionAgent::create([
-                    'agent_id' => $agent->id,
-                    'deposit_id' => $deposit->id,
-                    'generate_type' => 0
-                ]);
+                    DepositCommisionAgent::create([
+                        'agent_id' => $agent->id,
+                        'deposit_id' => $deposit->id,
+                        'generate_type' => 0
+                    ]);
 
-                $agent->total_balance += $agent_amount;
-                $agent->save();
+                    $agent->total_balance += $agent_amount;
+                    $agent->save();
 
-                $admin = User::find($agent->user_id);
-                $admin->total_balance += $admin_amount;
-                $admin->save();
+                    $admin = User::find($agent->user_id);
+                    $admin->total_balance += $admin_amount;
+                    $admin->save();
 
-                $total_balance = TotalBalance::where('client_id', $client_id)->first();
-                $total_balance->total_balance += $final_amount;
-                $total_balance->save();
+                    $total_balance = TotalBalance::where('client_id', $client_id)->first();
+                    $total_balance->total_balance += $final_amount;
+                    $total_balance->save();
 
-                return redirect()->route('deposit.index')->with('success', 'Deposit filled successfully.');
-            } elseif ($client->parent_client_id != 0) {
-                $percent = DepositPercent::orderBy('id', 'DESC')->first();
-                $admin_fee = $percent->admin_percent;
-                $agent_fee = $percent->agent_percent;
-                $client_fee = $percent->client_percent;
+                    return redirect()->route('deposit.index')->with('success', 'Deposit filled successfully.');
+                } elseif ($client->parent_client_id != 0) {
+                    $percent = DepositPercent::orderBy('id', 'DESC')->first();
+                    $admin_fee = $percent->admin_percent;
+                    $agent_fee = $percent->agent_percent;
+                    $client_fee = $percent->client_percent;
 
-                $fee = $admin_fee + $agent_fee;
-                $admin_amount = ($amount * $admin_fee) / 100;
-                $agent_amount = ($amount * $agent_fee) / 100;
-                $client_amount = ($amount * $client_fee) / 100;
-                $remove_amount = ($amount * $fee) / 100;
-                $final_amount = $amount - $remove_amount;
+                    $fee = $admin_fee + $agent_fee;
+                    $admin_amount = ($amount * $admin_fee) / 100;
+                    $agent_amount = ($amount * $agent_fee) / 100;
+                    $client_amount = ($amount * $client_fee) / 100;
+                    $remove_amount = ($amount * $fee) / 100;
+                    $final_amount = $amount - $remove_amount;
 
-                $deposit = Deposit::create([
-                    'client_id' => $client_id,
-                    'amount' => $amount,
-                    'fee' => $fee,
-                    'final_amount' => $final_amount,
-                    'description' => $description
-                ]);
+                    $deposit = Deposit::create([
+                        'client_id' => $client_id,
+                        'amount' => $amount,
+                        'fee' => $fee,
+                        'final_amount' => $final_amount,
+                        'description' => $description
+                    ]);
 
-                DepositAgentPercentage::create([
-                    'deposit_id' => $deposit->id,
-                    'total_percent' => $fee,
-                    'admin_id' => $agent->user_id,
-                    'admin' => $admin_fee,
-                    'agent_id' => $agent->id,
-                    'agent' => $agent_fee
-                ]);
+                    DepositAgentPercentage::create([
+                        'deposit_id' => $deposit->id,
+                        'total_percent' => $fee,
+                        'admin_id' => $agent->user_id,
+                        'admin' => $admin_fee,
+                        'agent_id' => $agent->id,
+                        'agent' => $agent_fee
+                    ]);
 
-                DepositClientPercentage::create([
-                    'deposit_id' => $deposit->id,
-                    'total_percent' => $fee,
-                    'admin_id' => $agent->user_id,
-                    'admin' => $admin_fee,
-                    'agent_id' => $agent->id,
-                    'agent' => $agent_fee,
-                    'parent_client_id' => $client->parent_client_id,
-                    'parent_client' => $client_fee
-                ]);
+                    DepositClientPercentage::create([
+                        'deposit_id' => $deposit->id,
+                        'total_percent' => $fee,
+                        'admin_id' => $agent->user_id,
+                        'admin' => $admin_fee,
+                        'agent_id' => $agent->id,
+                        'agent' => $agent_fee,
+                        'parent_client_id' => $client->parent_client_id,
+                        'parent_client' => $client_fee
+                    ]);
 
-                DepositCommisionAdmin::create([
-                    'admin_id' => $agent->user_id,
-                    'deposit_id' => $deposit->id,
-                    'generate_type' => 1
-                ]);
+                    DepositCommisionAdmin::create([
+                        'admin_id' => $agent->user_id,
+                        'deposit_id' => $deposit->id,
+                        'generate_type' => 1
+                    ]);
 
-                DepositCommisionAgent::create([
-                    'agent_id' => $agent->id,
-                    'deposit_id' => $deposit->id,
-                    'generate_type' => 1
-                ]);
+                    DepositCommisionAgent::create([
+                        'agent_id' => $agent->id,
+                        'deposit_id' => $deposit->id,
+                        'generate_type' => 1
+                    ]);
 
-                DepositCommisionClient::create([
-                    'client_id' => $client->parent_client_id,
-                    'deposit_id' => $deposit->id,
-                    'generate_type' => 1
-                ]);
+                    DepositCommisionClient::create([
+                        'client_id' => $client->parent_client_id,
+                        'deposit_id' => $deposit->id,
+                        'generate_type' => 1
+                    ]);
 
-                $agent->total_balance += $agent_amount;
-                $agent->save();
+                    $agent->total_balance += $agent_amount;
+                    $agent->save();
 
-                $admin = User::find($agent->user_id);
-                $admin->total_balance += $admin_amount;
-                $admin->save();
+                    $admin = User::find($agent->user_id);
+                    $admin->total_balance += $admin_amount;
+                    $admin->save();
 
-                $parent_client = TotalBalance::where('client_id', $client->parent_client_id)->first();
-                $parent_client->total_balance += $client_amount;
-                $parent_client->save();
+                    $parent_client = TotalBalance::where('client_id', $client->parent_client_id)->first();
+                    $parent_client->total_balance += $client_amount;
+                    $parent_client->save();
 
-                $total_balance = TotalBalance::where('client_id', $client_id)->first();
-                $total_balance->total_balance += $final_amount;
-                $total_balance->save();
+                    $total_balance = TotalBalance::where('client_id', $client_id)->first();
+                    $total_balance->total_balance += $final_amount;
+                    $total_balance->save();
 
-                return redirect()->route('deposit.index')->with('success', 'Deposit filled successfully.');
+                    return redirect()->route('deposit.index')->with('success', 'Deposit filled successfully.');
+                }
+            } else {
+                return redirect()->back()->with('failed', 'Your amount is not sufficient');
             }
         }
     }

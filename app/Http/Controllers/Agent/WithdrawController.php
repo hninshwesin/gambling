@@ -169,65 +169,65 @@ class WithdrawController extends Controller
 
             if ($client) {
                 if ($client->agent_id == $agent->id) {
-                    if ($agent->total_balance > $amount) {
-                        $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
-                        $admin_fee = $percent->admin_percent;
-                        $agent_fee = $percent->agent_percent;
+                    // if ($agent->total_balance > $amount) {
+                    $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
+                    $admin_fee = $percent->admin_percent;
+                    $agent_fee = $percent->agent_percent;
 
-                        $fee = $admin_fee + $agent_fee;
-                        $admin_amount = ($amount * $admin_fee) / 100;
-                        $agent_amount = ($amount * $agent_fee) / 100;
-                        $remove_amount = ($amount * $fee) / 100;
-                        $final_amount = $amount - $remove_amount;
+                    $fee = $admin_fee + $agent_fee;
+                    $admin_amount = ($amount * $admin_fee) / 100;
+                    $agent_amount = ($amount * $agent_fee) / 100;
+                    $remove_amount = ($amount * $fee) / 100;
+                    $final_amount = $amount - $remove_amount;
 
-                        $withdraw = Withdraw::create([
-                            'client_id' => $client_id,
-                            'amount' => $amount,
-                            'fee' => $fee,
-                            'final_amount' => $final_amount,
-                            'description' => $description,
-                            'approve_status' => 1
-                        ]);
+                    $withdraw = Withdraw::create([
+                        'client_id' => $client_id,
+                        'amount' => $amount,
+                        'fee' => $fee,
+                        'final_amount' => $final_amount,
+                        'description' => $description,
+                        'approve_status' => 1
+                    ]);
 
-                        WithdrawAgentPercentage::create([
-                            'withdraw_id' => $withdraw->id,
-                            'total_percent' => $fee,
-                            'admin_id' => $agent->user_id,
-                            'admin' => $admin_fee,
-                            'agent_id' => $agent->id,
-                            'agent' => $agent_fee,
-                        ]);
+                    WithdrawAgentPercentage::create([
+                        'withdraw_id' => $withdraw->id,
+                        'total_percent' => $fee,
+                        'admin_id' => $agent->user_id,
+                        'admin' => $admin_fee,
+                        'agent_id' => $agent->id,
+                        'agent' => $agent_fee,
+                    ]);
 
-                        WithdrawCommisionAdmin::create([
-                            'admin_id' => $agent->user_id,
-                            'withdraw_id' => $withdraw->id
-                        ]);
+                    WithdrawCommisionAdmin::create([
+                        'admin_id' => $agent->user_id,
+                        'withdraw_id' => $withdraw->id
+                    ]);
 
-                        WithdrawCommisionAgent::create([
-                            'agent_id' => $agent->id,
-                            'withdraw_id' => $withdraw->id
-                        ]);
+                    WithdrawCommisionAgent::create([
+                        'agent_id' => $agent->id,
+                        'withdraw_id' => $withdraw->id
+                    ]);
 
-                        $agent->total_balance += $amount + $agent_amount;
-                        $agent->save();
+                    $agent->total_balance += $amount + $agent_amount;
+                    $agent->save();
 
-                        $agent_of_client = Agent::find($client->agent_id);
-                        // $agent_of_client->total_balance += $agent_amount;
-                        // $agent->save();
+                    $agent_of_client = Agent::find($client->agent_id);
+                    // $agent_of_client->total_balance += $agent_amount;
+                    // $agent->save();
 
-                        $admin = User::find($agent->user_id);
-                        $admin->total_balance += $admin_amount;
-                        $admin->save();
+                    $admin = User::find($agent->user_id);
+                    $admin->total_balance += $admin_amount;
+                    $admin->save();
 
-                        $total_balance = TotalBalance::where('client_id', $client->id)->first();
-                        $total_balance->total_balance -= $amount;
-                        $total_balance->wallet_balance -= $amount;
-                        $total_balance->save();
+                    $total_balance = TotalBalance::where('client_id', $client->id)->first();
+                    $total_balance->total_balance -= $amount;
+                    $total_balance->wallet_balance -= $amount;
+                    $total_balance->save();
 
-                        return redirect()->route('withdraw.index')->with('success', 'Withdraw successfully.');
-                    } else {
-                        return redirect()->back()->with('failed', 'Your amount is not sufficient');
-                    }
+                    return redirect()->route('withdraw.index')->with('success', 'Withdraw successfully.');
+                    // } else {
+                    //     return redirect()->back()->with('failed', 'Your amount is not sufficient');
+                    // }
                 } else {
                     if ($agent->total_balance > $amount) {
                         $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
