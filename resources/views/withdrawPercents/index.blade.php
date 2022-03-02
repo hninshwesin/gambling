@@ -4,16 +4,16 @@
 
 @section('content')
 
-@if ($message = Session::get('success'))
-
-<div class="alert alert-success col-md-8" style="margin-left: 250px;margin-top: 1px;">
-
-    <p>{{ $message }}</p>
-
-</div>
-@endif
-
 <div class="container">
+
+    @if ($message = Session::get('success'))
+
+    <div class="alert alert-success col-md-12" style="margin-right: 250px;margin-top: 1px;">
+
+        <p>{{ $message }}</p>
+
+    </div>
+    @endif
 
     <div class="col-md-6 margin-tb" style="padding: 20px">
 

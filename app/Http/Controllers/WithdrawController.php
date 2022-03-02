@@ -234,13 +234,13 @@ class WithdrawController extends Controller
 
                     return redirect()->back()->with('success', 'Withdraw Request has been approved');
                 } else {
-                    return redirect()->back()->with('failed', 'Client does not exist');
+                    return redirect()->back()->with('error', 'Client does not exist');
                 }
             } else {
-                return redirect()->back()->with('failed', 'Withdraw does not exist');
+                return redirect()->back()->with('error', 'Withdraw does not exist');
             }
         } else {
-            return redirect()->back()->with('failed', 'Something went wrong.Please Sign in again!');
+            return redirect()->back()->with('error', 'Something went wrong.Please Sign in again!');
         }
     }
 }

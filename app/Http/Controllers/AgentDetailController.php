@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use App\Models\AgentDeposit;
 use App\Models\AgentWithdraw;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -117,10 +118,10 @@ class AgentDetailController extends Controller
 
                 return redirect()->route('agent_detail.index')->with('success', 'Agent Withdraw Request has been approved');
             } else {
-                return redirect()->back()->with('failed', 'Withdraw does not exist');
+                return redirect()->back()->with('error', 'Withdraw does not exist');
             }
         } else {
-            return redirect()->back()->with('failed', 'Something went wrong.Please Sign in again!');
+            return redirect()->back()->with('error', 'Something went wrong.Please Sign in again!');
         }
     }
 
@@ -128,5 +129,42 @@ class AgentDetailController extends Controller
     {
         $agent_withdraws = AgentWithdraw::all();
         return view('agent_withdraw_history')->with(['agent_withdraws' => $agent_withdraws]);
+    }
+
+    public function agent_deposit_request()
+    {
+        $agent_deposits = AgentDeposit::where('approve_status', '0')->get();
+        return view('agent_deposit_request')->with(['agent_deposits' => $agent_deposits]);
+    }
+
+    public function agent_deposit_approve(Request $request)
+    {
+        $deposit_id = $request->input('deposit_id');
+        $deposit = AgentDeposit::find($deposit_id);
+
+        $admin = Auth::guard('web')->user();
+        $main = User::find($admin->id);
+
+        if ($main) {
+            if ($deposit) {
+                $add_amount = $deposit->amount;
+                $deposit->agent->total_balance += $add_amount;
+                $deposit->approve_status = 1;
+                $deposit->save();
+                $deposit->agent->save();
+
+                return redirect()->route('agent_detail.index')->with('success', 'Agent Deposit Request has been approved');
+            } else {
+                return redirect()->back()->with('error', 'Deposit does not exist');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Something went wrong.Please Sign in again!');
+        }
+    }
+
+    public function agent_deposit_history()
+    {
+        $agent_deposits = AgentDeposit::all();
+        return view('agent_deposit_history')->with(['agent_deposits' => $agent_deposits]);
     }
 }

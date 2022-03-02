@@ -199,7 +199,7 @@ class DepositController extends Controller
                     return redirect()->route('deposit.index')->with('success', 'Deposit filled successfully.');
                 }
             } else {
-                return redirect()->back()->with('failed', 'Your amount is not sufficient');
+                return redirect()->back()->with('error', 'Your amount is not sufficient');
             }
         }
     }

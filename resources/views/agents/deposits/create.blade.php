@@ -23,6 +23,14 @@
 
     </div>
 
+    @elseif ($message = Session::get('error'))
+
+    <div class="alert alert-danger col-md-12" style="margin-right: 250px;margin-top: 1px;">
+
+        <p>{{ $message }}</p>
+
+    </div>
+
     @endif
 
     <div class="row" style="padding: 20px">

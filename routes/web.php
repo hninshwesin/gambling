@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\CurrentPrice;
+use App\Http\Controllers\Agent\AgentDepositController as AgentAgentDepositController;
 use App\Http\Controllers\Agent\AgentWithdrawController as AgentAgentWithdrawController;
 use App\Http\Controllers\Agent\AppUserController as AgentAppUserController;
 use App\Http\Controllers\Agent\ClientRegisterController as AgentClientRegisterController;
@@ -68,6 +69,7 @@ Route::group(['middleware' => 'auth:agent'], function () {
     Route::get('/agent/direct_withdraw', [\App\Http\Controllers\Agent\WithdrawController::class, 'direct_withdraw']);
     Route::post('/agent/make_direct_withdraw', [\App\Http\Controllers\Agent\WithdrawController::class, 'make_direct_withdraw']);
     Route::resource('agent/agent_withdraw', AgentAgentWithdrawController::class);
+    Route::resource('agent/agent_deposit', AgentAgentDepositController::class);
 });
 
 // Route::group(['middleware' => 'auth:client'], function () {
@@ -95,6 +97,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('agent_withdraw_request', [\App\Http\Controllers\AgentDetailController::class, 'agent_withdraw_request'])->name('agent_withdraw_request');
     Route::post('agent_withdraw_approve', [\App\Http\Controllers\AgentDetailController::class, 'agent_withdraw_approve'])->name('agent_withdraw_approve');
     Route::get('agent_withdraw_history', [\App\Http\Controllers\AgentDetailController::class, 'agent_withdraw_history'])->name('agent_withdraw_history');
+    Route::get('agent_deposit_request', [\App\Http\Controllers\AgentDetailController::class, 'agent_deposit_request'])->name('agent_deposit_request');
+    Route::post('agent_deposit_approve', [\App\Http\Controllers\AgentDetailController::class, 'agent_deposit_approve'])->name('agent_deposit_approve');
+    Route::get('agent_deposit_history', [\App\Http\Controllers\AgentDetailController::class, 'agent_deposit_history'])->name('agent_deposit_history');
 });
 
 Route::get('logout', [LoginController::class, 'logout']);

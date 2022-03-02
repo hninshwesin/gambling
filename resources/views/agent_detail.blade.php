@@ -30,7 +30,7 @@
 
         @if ($message = Session::get('success'))
 
-        <div class="alert alert-success">
+        <div class="alert alert-success col-md-12" style="margin-right: 250px;margin-top: 1px;">
 
             <p>{{ $message }}</p>
 
@@ -49,6 +49,19 @@
             <div class="form-group col-md-8">
 
                 <a class="btn btn-success" href="{{ route('agent_withdraw_request') }}">Make Approve for Agent Withdraw
+                    Request</a>
+
+            </div>
+
+            <div class="form-group col-md-8">
+
+                <a class="btn btn-success" href="{{ url('agent_deposit_history') }}">Agent Deposit History</a>
+
+            </div>
+
+            <div class="form-group col-md-8">
+
+                <a class="btn btn-success" href="{{ route('agent_deposit_request') }}">Make Approve for Agent Deposit
                     Request</a>
 
             </div>

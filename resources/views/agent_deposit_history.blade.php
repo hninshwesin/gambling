@@ -22,7 +22,7 @@
 
             <div class="pull-left">
 
-                <h2>Withdraws</h2>
+                <h2>Deposits</h2>
 
             </div>
 
@@ -44,7 +44,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Withdraw History</h3>
+            <h3 class="card-title">Deposit History</h3>
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
@@ -52,24 +52,24 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Withdraw Amount</th>
+                        <th>Deposit Amount</th>
                         <th>Description</th>
                         <th>Date</th>
                         <th>Approve Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($agent_withdraws as $agent_withdraw)
+                    @foreach($agent_deposits as $agent_deposit)
                     <tr>
-                        <td>{{ $agent_withdraw->id }}</td>
-                        <td>{{$agent_withdraw->agent->name}}</td>
-                        <td>{{$agent_withdraw->amount}}</td>
-                        <td>{{$agent_withdraw->description}}</td>
-                        <td>{{$agent_withdraw->created_at}}</td>
+                        <td>{{ $agent_deposit->id }}</td>
+                        <td>{{$agent_deposit->agent->name}}</td>
+                        <td>{{$agent_deposit->amount}}</td>
+                        <td>{{$agent_deposit->description}}</td>
+                        <td>{{$agent_deposit->created_at}}</td>
                         <td>
-                            @if ($agent_withdraw->approve_status == 0)
+                            @if ($agent_deposit->approve_status == 0)
                             Pending
-                            @elseif ($agent_withdraw->approve_status == 1)
+                            @elseif ($agent_deposit->approve_status == 1)
                             Approved
                             @endif
                         </td>

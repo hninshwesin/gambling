@@ -70,6 +70,12 @@
                                 <p>Your Wallet Withdraw</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/agent/agent_deposit" class="nav-link active">
+                                <i class="fas fa-list-ul nav-icon"></i>
+                                <p>Your Wallet Deposit</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

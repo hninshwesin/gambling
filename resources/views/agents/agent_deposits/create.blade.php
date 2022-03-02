@@ -40,7 +40,7 @@
 
             <div class="pull-left">
 
-                <h2> Request Withdraw Your Money </h2>
+                <h2> Request Deposit </h2>
 
             </div>
 
@@ -48,7 +48,7 @@
 
         <div class="form-group col-md-12">
 
-            <a class="btn btn-primary" href="{{ url('/agent/agent_withdraw') }}">Back to Wallet Withdraw Page</a>
+            <a class="btn btn-primary" href="{{ url('/agent/agent_deposit') }}">Back to Wallet Deposit Page</a>
 
         </div>
 
@@ -61,7 +61,7 @@
     </div>
 
     <div>
-        <form action="{{ url('agent/agent_withdraw') }}" method="POST">
+        <form action="{{ url('agent/agent_deposit') }}" method="POST">
             @csrf
             <div class="row justify-content-center">
 
@@ -89,7 +89,7 @@
 
                     <div class="form-group">
 
-                        <strong>Withdraw Amount:</strong>
+                        <strong>Deposit Amount:</strong>
 
                         <input type="text" name="amount" class="form-control" placeholder="input amount" required>
 

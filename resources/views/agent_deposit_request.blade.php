@@ -27,7 +27,7 @@
 
     @if ($message = Session::get('success'))
 
-    <div class="alert alert-success col-md-12" style="margin-right: 250px;margin-top: 1px;">
+    <div class="alert alert-success">
 
         <p>{{ $message }}</p>
 
@@ -37,7 +37,7 @@
 
     <div class="form-group col-md-6">
 
-        <a class="btn btn-primary" href="{{ route('deposit.index') }}"> Back</a>
+        <a class="btn btn-primary" href="{{ route('agent_detail.index') }}"> Back</a>
 
     </div>
 
@@ -47,11 +47,9 @@
 
             <th>ID</th>
 
-            <th>Phone Number</th>
+            <th>Name</th>
 
             <th>Deposit Amount</th>
-
-            <th>Fee (%)</th>
 
             <th>Description</th>
 
@@ -61,17 +59,15 @@
 
         </tr>
 
-        @foreach ($deposits as $deposit)
+        @foreach ($agent_deposits as $deposit)
 
         <tr>
 
             <td>{{ $deposit->id }}</td>
 
-            <td>{{ $deposit->client->phone_number }}</td>
+            <td>{{ $deposit->agent->name }}</td>
 
             <td>{{$deposit->amount}}</td>
-
-            <td>{{$deposit->fee}} %</td>
 
             <td>{{$deposit->description}}</td>
 
@@ -79,7 +75,7 @@
 
             <td>
 
-                <form action="{{ route('deposit_approve') }}" method="POST"
+                <form action="{{ route('agent_deposit_approve') }}" method="POST"
                     onsubmit="return confirm('Are you sure you want to approve this deposit request?');">
                     @csrf
 

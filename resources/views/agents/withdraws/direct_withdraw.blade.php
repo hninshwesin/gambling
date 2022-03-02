@@ -6,6 +6,16 @@
 
 <div class="container">
 
+    @if ($message = Session::get('success'))
+
+    <div class="alert alert-success col-md-12" style="margin-right: 250px;margin-top: 1px;">
+
+        <p>{{ $message }}</p>
+
+    </div>
+
+    @endif
+
     @if ($errors->any())
 
     <div class="alert alert-danger">
@@ -21,6 +31,14 @@
             @endforeach
 
         </ul>
+
+    </div>
+
+    @elseif ($message = Session::get('error'))
+
+    <div class="alert alert-danger col-md-12" style="margin-right: 250px;margin-top: 1px;">
+
+        <p>{{ $message }}</p>
 
     </div>
 

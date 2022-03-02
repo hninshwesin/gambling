@@ -24,4 +24,9 @@ class Agent extends Authenticatable
     {
         return $this->hasMany(AgentWithdraw::class);
     }
+
+    public function agent_deposits()
+    {
+        return $this->hasMany(AgentDeposit::class);
+    }
 }

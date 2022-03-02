@@ -386,13 +386,13 @@ class DepositController extends Controller
                     }
                     return redirect()->back()->with('success', 'Deposit Request has been approved');
                 } else {
-                    return redirect()->back()->with('failed', 'Client does not exist');
+                    return redirect()->back()->with('error', 'Client does not exist');
                 }
             } else {
-                return redirect()->back()->with('failed', 'Deposit does not exist');
+                return redirect()->back()->with('error', 'Deposit does not exist');
             }
         } else {
-            return redirect()->back()->with('failed', 'Something went wrong.Please Sign in again!');
+            return redirect()->back()->with('error', 'Something went wrong.Please Sign in again!');
         }
     }
 }

@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
-use App\Models\AgentWithdraw;
+use App\Models\AgentDeposit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AgentWithdrawController extends Controller
+class AgentDepositController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,8 +21,8 @@ class AgentWithdrawController extends Controller
         $agent = Agent::find($user->id);
 
         if ($agent) {
-            $agent_withdraws = AgentWithdraw::where('agent_id', $agent->id)->get();
-            return view('agents/agent_withdraws.index')->with(['agent_withdraws' => $agent_withdraws]);
+            $agent_deposits = AgentDeposit::where('agent_id', $agent->id)->get();
+            return view('agents/agent_deposits.index')->with(['agent_deposits' => $agent_deposits]);
         }
     }
 
@@ -36,7 +36,7 @@ class AgentWithdrawController extends Controller
         $user = Auth::guard('agent')->user();
         $agent = Agent::find($user->id);
 
-        return view('agents/agent_withdraws.create')->with(['agent' => $agent]);
+        return view('agents/agent_deposits.create')->with(['agent' => $agent]);
     }
 
     /**
@@ -50,31 +50,27 @@ class AgentWithdrawController extends Controller
         $request->validate([
             'amount' => 'required|integer'
         ]);
-        $withdraw_amount = $request->input('amount');
+        $deposit_amount = $request->input('amount');
         $description = $request->input('description');
 
         $user = Auth::guard('agent')->user();
         $agent = Agent::find($user->id);
 
         if ($agent) {
-            if ($agent->total_balance >= $withdraw_amount) {
 
-                $withdraw_record = AgentWithdraw::where('agent_id', $agent->id)->where('approve_status', 0)->first();
+            $deposit_record = AgentDeposit::where('agent_id', $agent->id)->where('approve_status', 0)->first();
 
-                if (!$withdraw_record) {
-                    AgentWithdraw::create([
-                        'agent_id' => $agent->id,
-                        'amount' => $withdraw_amount,
-                        'description' => $description,
-                        'approve_status' => 0
-                    ]);
+            if (!$deposit_record) {
+                AgentDeposit::create([
+                    'agent_id' => $agent->id,
+                    'amount' => $deposit_amount,
+                    'description' => $description,
+                    'approve_status' => 0
+                ]);
 
-                    return redirect()->route('agent_withdraw.index')->with('success', 'Withdraw requested successfully.');
-                } else {
-                    return redirect()->back()->with('error', 'You have already requested money to withdraw, Please contact with Admin first!');
-                }
+                return redirect()->route('agent_deposit.index')->with('success', 'Deposit requested successfully.');
             } else {
-                return redirect()->back()->with('error', 'Your amount is not sufficient');
+                return redirect()->back()->with('error', 'You have already requested money to add Deposit, Please contact with Admin first!');
             }
         } else {
             return redirect()->back()->with('error', 'Something went wrong.Please Sign in again!');
