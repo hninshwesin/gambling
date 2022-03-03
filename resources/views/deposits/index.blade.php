@@ -18,7 +18,7 @@
 
         </div>
 
-        <div class="form-group col-md-6">
+        {{-- <div class="form-group col-md-6">
 
             <a class="btn btn-success" href="{{ route('deposit.create') }}">Fill Deposit</a>
 
@@ -28,7 +28,7 @@
 
             <a class="btn btn-success" href="{{ route('deposit_request') }}">Make Approve for Deposit Request</a>
 
-        </div>
+        </div> --}}
 
         <div class="form-group col-md-6">
 
@@ -49,6 +49,7 @@
                         <th>Phone Number</th>
                         <th>Deposit Amount</th>
                         <th>Fee (%)</th>
+                        <th>Final Amount</th>
                         <th>Description</th>
                         <th>Request Date</th>
                         <th>Approved Date</th>
@@ -61,6 +62,7 @@
                         <td>{{$deposit->client->phone_number}}</td>
                         <td>{{$deposit->amount}}</td>
                         <td>{{$deposit->fee}} %</td>
+                        <td>{{$deposit->final_amount}}</td>
                         <td>{{$deposit->description}}</td>
                         <td>{{$deposit->created_at}}</td>
                         <td>{{$deposit->updated_at}}</td>

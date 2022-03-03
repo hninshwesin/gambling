@@ -37,8 +37,10 @@ class DepositController extends Controller
      */
     public function create()
     {
-        $clients = Client::all();
-        return view('deposits.create')->with(['clients' => $clients]);
+        /**Fill deposit from admin directly */
+
+        // $clients = Client::all();
+        // return view('deposits.create')->with(['clients' => $clients]);
     }
 
     /**
@@ -85,7 +87,8 @@ class DepositController extends Controller
                     'amount' => $amount,
                     'fee' => $fee,
                     'final_amount' => $final_amount,
-                    'description' => $description
+                    'description' => $description,
+                    'approve_status' => 1
                 ]);
 
                 DepositAgentPercentage::create([
@@ -140,7 +143,8 @@ class DepositController extends Controller
                     'amount' => $amount,
                     'fee' => $fee,
                     'final_amount' => $final_amount,
-                    'description' => $description
+                    'description' => $description,
+                    'approve_status' => 1
                 ]);
 
                 DepositAgentPercentage::create([
@@ -249,8 +253,10 @@ class DepositController extends Controller
 
     public function deposit_request()
     {
-        $deposits = Deposit::where('approve_status', '0')->get();
-        return view('deposits.approve')->with(['deposits' => $deposits]);
+        /**Approve client deposit */
+
+        // $deposits = Deposit::where('approve_status', '0')->get();
+        // return view('deposits.approve')->with(['deposits' => $deposits]);
     }
 
     public function deposit_approve(Request $request)
@@ -316,6 +322,8 @@ class DepositController extends Controller
                         $total_balance->total_balance += $final_amount;
                         $total_balance->wallet_balance += $amount;
                         $total_balance->save();
+
+                        // return redirect()->back()->with('success', 'Deposit Request has been approved');
                     } elseif ($client->parent_client_id != 0) {
                         // dd('parent client, true');
                         $percent = DepositPercent::orderBy('id', 'DESC')->first();

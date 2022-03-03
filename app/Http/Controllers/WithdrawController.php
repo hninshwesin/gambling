@@ -35,8 +35,10 @@ class WithdrawController extends Controller
      */
     public function create()
     {
-        $clients = Client::all();
-        return view('withdraws.create')->with(['clients' => $clients]);
+        /**Fill withdraw from admin directly */
+
+        // $clients = Client::all();
+        // return view('withdraws.create')->with(['clients' => $clients]);
     }
 
     /**
@@ -166,8 +168,10 @@ class WithdrawController extends Controller
 
     public function withdraw_request()
     {
-        $withdraws = Withdraw::where('approve_status', '0')->get();
-        return view('withdraws.approve')->with(['withdraws' => $withdraws]);
+        /**Approve client withdraw */
+
+        // $withdraws = Withdraw::where('approve_status', '0')->get();
+        // return view('withdraws.approve')->with(['withdraws' => $withdraws]);
     }
 
     public function withdraw_approve(Request $request)

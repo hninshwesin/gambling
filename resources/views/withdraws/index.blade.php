@@ -18,7 +18,7 @@
 
         </div>
 
-        <div class="form-group col-md-6">
+        {{-- <div class="form-group col-md-6">
 
             <a class="btn btn-success" href="{{ route('withdraw.create') }}">Fill Withdraw</a>
 
@@ -28,7 +28,7 @@
 
             <a class="btn btn-success" href="{{ route('withdraw_request') }}">Make Approve for Withdraw Request</a>
 
-        </div>
+        </div> --}}
 
         <div class="form-group col-md-6">
 
