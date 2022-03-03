@@ -22,6 +22,15 @@
 
 @endif
 
+@if ($message = Session::get('success'))
+
+<div class="alert alert-success col-md-12" style="margin-right: 250px;margin-top: 1px;">
+
+    <p>{{ $message }}</p>
+
+</div>
+@endif
+
 @section('content')
 <div class="content-header">
     <div class="container">
@@ -54,8 +63,8 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="email"
-                                    class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address')
+                                    }}</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="email"
@@ -71,8 +80,8 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="password"
-                                    class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password')
+                                    }}</label>
 
                                 <div class="col-md-6">
                                     <input id="password" type="password"
@@ -88,8 +97,8 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="password-confirm"
-                                    class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{
+                                    __('Confirm Password') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="password-confirm" type="password" class="form-control"

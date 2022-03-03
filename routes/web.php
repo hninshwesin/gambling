@@ -70,6 +70,10 @@ Route::group(['middleware' => 'auth:agent'], function () {
     Route::post('/agent/make_direct_withdraw', [\App\Http\Controllers\Agent\WithdrawController::class, 'make_direct_withdraw']);
     Route::resource('agent/agent_withdraw', AgentAgentWithdrawController::class);
     Route::resource('agent/agent_deposit', AgentAgentDepositController::class);
+    Route::get('deposit_request_from_client', [App\Http\Controllers\Agent\DepositController::class, 'deposit_request_from_client'])->name('deposit_request_from_client');
+    Route::post('deposit_approve_from_client', [App\Http\Controllers\Agent\DepositController::class, 'deposit_approve_from_client'])->name('deposit_approve_from_client');
+    Route::get('withdraw_request_from_client', [App\Http\Controllers\Agent\WithdrawController::class, 'withdraw_request_from_client'])->name('withdraw_request_from_client');
+    Route::post('withdraw_approve_from_client', [App\Http\Controllers\Agent\WithdrawController::class, 'withdraw_approve_from_client'])->name('withdraw_approve_from_client');
 });
 
 // Route::group(['middleware' => 'auth:client'], function () {

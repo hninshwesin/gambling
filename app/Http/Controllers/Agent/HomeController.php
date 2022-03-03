@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agent;
 use App\Models\AppUser;
 use App\Models\Client;
 use App\Models\Order;
@@ -19,11 +20,14 @@ class HomeController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            $user = Auth::user();
+            // $user = Auth::user();
+            $user = Auth::guard('agent')->user();
+            $agent = Agent::find($user->id);
             $total_balance = $user->total_balance;
-            $clients = Client::all();
+            $clients = Client::where('agent_id', $agent->id)->get();
             $client_count = $clients->count();
-            $order_count = Order::count();
+            $orders = Order::where('agent_id', $agent->id)->get();
+            $order_count = $orders->count();
             return view('agents.home', compact('clients', 'total_balance', 'client_count', 'order_count'));
         } else {
             return redirect("/login/agent");
@@ -33,7 +37,9 @@ class HomeController extends Controller
     public function order_details()
     {
         if (Auth::check()) {
-            $orders = Order::get();
+            $user = Auth::guard('agent')->user();
+            $agent = Agent::find($user->id);
+            $orders = Order::where('agent_id', $agent->id)->get();
             return view('agents.order', compact('orders'));
         } else {
             return redirect("/login/agent");

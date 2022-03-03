@@ -68,6 +68,8 @@ class WithdrawController extends Controller
 
             $client = Client::find($client_id);
 
+            $agent = Agent::find($client->agent_id);
+
             $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
             $admin_fee = $percent->admin_percent;
             $agent_fee = $percent->agent_percent;
@@ -83,7 +85,8 @@ class WithdrawController extends Controller
                 'amount' => $amount,
                 'fee' => $fee,
                 'final_amount' => $final_amount,
-                'description' => $description
+                'description' => $description,
+                'agent_id' => $agent->id
             ]);
 
             WithdrawAgentPercentage::create([
@@ -108,7 +111,7 @@ class WithdrawController extends Controller
             $main->total_balance += $admin_amount;
             $main->save();
 
-            $agent = Agent::find($client->agent_id);
+
             $agent->total_balance += $agent_amount;
             $agent->save();
 

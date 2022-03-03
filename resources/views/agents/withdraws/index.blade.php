@@ -27,16 +27,23 @@
 
         </div>
 
-        <div class="form-group col-md-6">
+        {{-- <div class="form-group col-md-6">
 
             <a class="btn btn-success" href="{{ url('/agent/withdraw/create') }}">Make Request to ADMIN for Client's
                 money Withdraw</a>
+
+        </div> --}}
+
+        <div class="form-group col-md-8">
+
+            <a class="btn btn-success" href="{{ url('/agent/direct_withdraw') }}">Fill Withdraw</a>
 
         </div>
 
         <div class="form-group col-md-8">
 
-            <a class="btn btn-success" href="{{ url('/agent/direct_withdraw') }}">Withdraw Client's Money</a>
+            <a class="btn btn-success" href="{{ route('withdraw_request_from_client') }}">Make Approve for Withdraw
+                Request</a>
 
         </div>
 

@@ -53,7 +53,8 @@ class WithdrawController extends Controller
                     'fee' => $fee,
                     'final_amount' => $final_amount,
                     'description' => $description,
-                    'approve_status' => 0
+                    'approve_status' => 0,
+                    'agent_id' => $app_user->agent_id
                 ]);
 
                 return response()->json(['error_code' => '0', 'message' => 'Request to withdraw money done successfully,Super Option Admins will contact soon.']);

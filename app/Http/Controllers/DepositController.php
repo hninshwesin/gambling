@@ -88,7 +88,8 @@ class DepositController extends Controller
                     'fee' => $fee,
                     'final_amount' => $final_amount,
                     'description' => $description,
-                    'approve_status' => 1
+                    'approve_status' => 1,
+                    'agent_id' => $client->agent_id
                 ]);
 
                 DepositAgentPercentage::create([
@@ -144,7 +145,8 @@ class DepositController extends Controller
                     'fee' => $fee,
                     'final_amount' => $final_amount,
                     'description' => $description,
-                    'approve_status' => 1
+                    'approve_status' => 1,
+                    'agent_id' => $client->agent_id
                 ]);
 
                 DepositAgentPercentage::create([

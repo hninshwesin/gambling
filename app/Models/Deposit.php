@@ -15,4 +15,9 @@ class Deposit extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
+    }
 }

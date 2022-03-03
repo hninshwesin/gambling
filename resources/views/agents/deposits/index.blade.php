@@ -16,7 +16,7 @@
 
 <div class="container">
 
-    <div class="col-md-3 margin-tb" style="padding: 20px">
+    <div class="col-md-6 margin-tb" style="padding: 20px">
 
         <div class="pull-left">
 
@@ -27,6 +27,15 @@
         <div class="pull-right">
 
             <a class="btn btn-success" href="{{ url('/agent/deposit/create') }}">Fill Deposit</a>
+
+        </div>
+
+        <br>
+
+        <div class="pull-right">
+
+            <a class="btn btn-success" href="{{ route('deposit_request_from_client') }}">Make Approve for Deposit
+                Request</a>
 
         </div>
 

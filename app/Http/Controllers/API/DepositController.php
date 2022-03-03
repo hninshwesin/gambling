@@ -54,7 +54,8 @@ class DepositController extends Controller
                     'fee' => $fee,
                     'final_amount' => $final_amount,
                     'description' => $description,
-                    'approve_status' => 0
+                    'approve_status' => 0,
+                    'agent_id' => $app_user->agent_id
                 ]);
                 return response()->json(['error_code' => '0', 'message' => 'Deposit Request done successfully,Super Option Admins will contact soon.']);
             } elseif ($app_user->parent_client_id != 0) {
@@ -76,7 +77,8 @@ class DepositController extends Controller
                     'fee' => $fee,
                     'final_amount' => $final_amount,
                     'description' => $description,
-                    'approve_status' => 0
+                    'approve_status' => 0,
+                    'agent_id' => $app_user->agent_id
                 ]);
                 return response()->json(['error_code' => '0', 'message' => 'Deposit Request done successfully,Super Option Admins will contact soon.']);
             }

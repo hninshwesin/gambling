@@ -64,6 +64,7 @@ class OrderController extends Controller
                     'stock_rate' => $bid_price->bid_price,
                     'client_id' => $client->id,
                     'bid_status' => 0, //buy
+                    'agent_id' => $client->agent_id
                 ]);
 
                 // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
@@ -106,6 +107,7 @@ class OrderController extends Controller
                     'stock_rate' => $bid_price->bid_price,
                     'client_id' => $client->id,
                     'bid_status' => 1, //sell
+                    'agent_id' => $client->agent_id
                 ]);
 
                 // dispatch(new OrderOnClickTime($order))->delay(now()->addMinutes($minute));
