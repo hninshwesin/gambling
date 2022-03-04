@@ -44,9 +44,9 @@ class OrderController extends Controller
         $minute = $request->input('minute');
 
         $wallet = TotalBalance::where('client_id', $client->id)->first();
-        $balance = $wallet->total_balance;
+        $balance = $wallet->wallet_balance;
 
-        if ($balance > $amount) {
+        if ($balance >= $amount) {
             // $response = Http::withHeaders(['x-access-token' => 'goldapi-aaqdoetkunu1104-io'])
             //     ->accept('application/json')
             //     ->get("https://www.goldapi.io/api/XAU/USD");
@@ -93,9 +93,9 @@ class OrderController extends Controller
         $minute = $request->input('minute');
 
         $wallet = TotalBalance::where('client_id', $client->id)->first();
-        $balance = $wallet->total_balance;
+        $balance = $wallet->wallet_balance;
 
-        if ($balance > $amount) {
+        if ($balance >= $amount) {
             $current_time = Carbon::now()->toDateTimeString();
 
             $bid_price = BidPrice::where('created_at', '<=', $current_time)->orderBy('id', 'desc')->first();
