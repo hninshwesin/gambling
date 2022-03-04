@@ -52,7 +52,7 @@
                         <td>{{ $client->id }}</td>
                         <td>{{$client->phone_number}}</td>
                         <td>{{$client->email}}</td>
-                        <td>{{$client->total_balances->total_balance}}</td>
+                        <td>{{$client->total_balances->wallet_balance}}</td>
                         <td>{{$client->created_at}}</td>
                     </tr>
                     @endforeach
