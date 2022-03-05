@@ -36,7 +36,7 @@ class WithdrawController extends Controller
         $app_user = Client::find($user->id);
 
         if ($app_user) {
-            if ($app_user->total_balances->total_balance >= $withdraw_amount) {
+            if ($app_user->total_balances->wallet_balance >= $withdraw_amount) {
                 $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
                 $admin_fee = $percent->admin_percent;
                 $agent_fee = $percent->agent_percent;

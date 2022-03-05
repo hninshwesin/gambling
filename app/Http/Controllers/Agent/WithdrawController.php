@@ -73,7 +73,7 @@ class WithdrawController extends Controller
             $client = Client::find($client_id);
 
             if ($client) {
-                if ($client->total_balances->total_balance >= $amount) {
+                if ($client->total_balances->wallet_balance >= $amount) {
                     $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
                     $admin_fee = $percent->admin_percent;
                     $agent_fee = $percent->agent_percent;
@@ -182,7 +182,7 @@ class WithdrawController extends Controller
             $client = Client::find($client_id);
 
             if ($client) {
-                if ($client->total_balances->total_balance >= $amount) {
+                if ($client->total_balances->wallet_balance >= $amount) {
                     if ($client->agent_id == $agent->id) {
                         // if ($agent->total_balance > $amount) {
                         $percent = WithdrawPercent::orderBy('id', 'DESC')->first();
@@ -345,7 +345,7 @@ class WithdrawController extends Controller
 
                 if ($client) {
                     // dd('hello');
-                    if ($client->total_balances->total_balance >= $withdraw->amount) {
+                    if ($client->total_balances->wallet_balance >= $withdraw->amount) {
                         $withdraw->approve_status = 1;
                         $withdraw->save();
 

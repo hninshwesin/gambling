@@ -196,6 +196,7 @@ class DepositController extends Controller
 
                 $parent_client = TotalBalance::where('client_id', $client->parent_client_id)->first();
                 $parent_client->total_balance += $client_amount;
+                $parent_client->wallet_balance += $client_amount;
                 $parent_client->save();
 
                 $total_balance = TotalBalance::where('client_id', $client_id)->first();
@@ -387,6 +388,7 @@ class DepositController extends Controller
 
                         $parent_client = TotalBalance::where('client_id', $client->parent_client_id)->first();
                         $parent_client->total_balance += $client_amount;
+                        $parent_client->wallet_balance += $client_amount;
                         $parent_client->save();
 
                         $total_balance = TotalBalance::where('client_id', $client->id)->first();

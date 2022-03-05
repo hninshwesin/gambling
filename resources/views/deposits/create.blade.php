@@ -45,7 +45,7 @@
                         <option value="">--Select--</option>
                         @foreach( $clients as $client)
                         <option value="{{ $client->id }}">{{$client->phone_number}} (Current Balance -
-                            {{$client->total_balances->total_balance}})</option>
+                            {{$client->total_balances->wallet_balance}})</option>
                         @endforeach
                     </select>
 

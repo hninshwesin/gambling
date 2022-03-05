@@ -27,7 +27,7 @@
                         <td>{{ $app_user->id }}</td>
                         <td>{{$app_user->phone_number}}</td>
                         <td>{{$app_user->email}}</td>
-                        <td>{{$app_user->total_balances->total_balance}}</td>
+                        <td>{{$app_user->total_balances->wallet_balance}}</td>
                         <td>{{$app_user->created_at}}</td>
                     </tr>
                     @endforeach

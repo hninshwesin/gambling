@@ -73,7 +73,8 @@ class AppUserController extends Controller
 
                 TotalBalance::create([
                     'client_id' => $Client->id,
-                    'total_balance' => 0
+                    'total_balance' => 0,
+                    'wallet_balance' => 0
                 ]);
 
                 if ($agent->have_client == 0) {
