@@ -44,7 +44,7 @@ Route::get('/', function () {
 });
 
 Auth::routes([
-    'register' => true
+    'register' => false
 ]);
 
 Route::get('/login/agent', [LoginController::class, 'showAgentLoginForm']);
