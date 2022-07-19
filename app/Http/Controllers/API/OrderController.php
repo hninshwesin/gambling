@@ -137,7 +137,9 @@ class OrderController extends Controller
         $user = Auth::guard('client-api')->user();
         $app_user = Client::find($user->id);
 
-        $orders = Order::where('client_id', $app_user->id)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->get();
+        $orders = Order::where('client_id', $app_user->id)
+            ->where('created_at', '>=', Carbon::now()->subMinutes(5))
+            ->orderBy('id', 'desc')->get();
 
         return (new OrderHistoryResourceCollection($orders));
         // $order = Order::where('client_id', $app_user->id)->orderBy('id', 'desc')->first();
