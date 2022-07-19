@@ -21,6 +21,7 @@ class OrderHistoryResource extends JsonResource
             'amount' => $this->amount,
             'minute' => $this->minute,
             'stock_rate' => $this->stock_rate,
+            'bid_status' => $this->bid_status,
             'created_at' => $this->created_at->format('Y-m-d H:i'),
             'bid_compare' => new BidCompareResource(BIDCompare::where('order_id', $this->id)->first()),
         ];
